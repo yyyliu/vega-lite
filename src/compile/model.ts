@@ -15,6 +15,7 @@ import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
 import {ScaleComponents} from './scale';
 import {RepeatModel, RepeatValues} from './repeat';
+import {LayerModel} from './layer';
 
 
 /**
@@ -399,4 +400,8 @@ export abstract class Model {
 
 export function isRepeatModel(model: Model): model is RepeatModel {
   return model.isRepeat();
+}
+
+export function isLayerModel(model: Model): model is LayerModel {
+  return model.isLayer();
 }

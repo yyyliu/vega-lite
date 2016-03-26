@@ -92,7 +92,7 @@ export namespace source {
 
     model.children().forEach((child) => {
       const childData = child.component.data;
-      
+
       // TODO: merge children into different groups that are mergable.  (Current we only merge into one.) 
 
       const canMerge = !childData.filter && !childData.formatParse && !childData.nullFilter;

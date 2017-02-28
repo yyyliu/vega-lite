@@ -97,6 +97,7 @@
   "dependencies": {
     "json-stable-stringify": "~1.0.1",
     "tslib": "^1.6.0",
+    "tslint-config-standard": "^4.0.0",
     "vega-util": "~1.1.4",
     "yargs": "~6.6.0"
   }

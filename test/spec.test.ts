@@ -4,8 +4,6 @@ import {assert} from 'chai';
 
 import {normalize, fieldDefs} from '../src/spec';
 
-// describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
-
 describe('normalize()', function () {
   describe('normalizeFacetedUnit', () => {
     it('should convert single extended spec with column into a composite spec', function() {

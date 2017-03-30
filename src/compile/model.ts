@@ -184,6 +184,10 @@ export abstract class Model {
     return vals(this.component.legends);
   }
 
+  public assembleProjections(): VgProjections[] {
+    return vals(this.component.projections);
+  }
+
   public assembleGroup() {
     let group: VgEncodeEntry = {};
 
@@ -194,9 +198,15 @@ export abstract class Model {
 
     // TODO: consider if we want scales to come before marks in the output spec.
     group.marks = this.assembleMarks();
+
     const scales = this.assembleScales();
     if (scales.length > 0) {
       group.scales = scales;
+    }
+
+    const projections = this.assembleProjections();
+    if (projections.length > 0) {
+      group.projections = projections;
     }
 
     const axes = this.assembleAxes();

@@ -29,6 +29,7 @@ export interface Component {
   data: DataComponent;
   layout: LayoutComponent;
   scales: Dict<VgScale>;
+  projections: Dict<VgProjection>;
   selection: Dict<SelectionComponent>;
 
   /** Dictionary mapping channel to VgAxis definition */
@@ -128,13 +129,14 @@ export abstract class Model {
     this.description = spec.description;
     this.transforms = spec.transform || [];
 
-    this.component = {data: null, layout: null, mark: null, scales: null, axes: null, axisGroups: null, gridGroups: null, legends: null, selection: null};
+    this.component = {data: null, layout: null, mark: null, scales: null, projections: null, axes: null, axisGroups: null, gridGroups: null, legends: null, selection: null};
   }
 
   public parse() {
     this.parseData();
     this.parseLayoutData();
     this.parseScale(); // depends on data name
+    this.parseProjection();
     this.parseSelection();
     this.parseAxis(); // depends on scale name
     this.parseLegend(); // depends on scale name
@@ -150,6 +152,8 @@ export abstract class Model {
   public abstract parseLayoutData(): void;
 
   public abstract parseScale(): void;
+
+  public abstract parseProjection(): void;
 
   public abstract parseMark(): void;
 

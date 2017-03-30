@@ -7,6 +7,7 @@ import * as vlEncoding from '../encoding'; // TODO: remove
 import {field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
+import {Projection} from '../projection';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {UnitSpec} from '../spec';
 import {Dict, duplicate, extend} from '../util';
@@ -46,6 +47,7 @@ export class UnitModel extends Model {
 
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding;
+  protected readonly projection: Projection;
   protected readonly selection: Dict<SelectionDef> = {};
   protected readonly scales: Dict<Scale> = {};
   protected readonly axes: Dict<Axis> = {};
@@ -80,6 +82,7 @@ export class UnitModel extends Model {
 
     this.axes = this.initAxes(encoding);
     this.legends = this.initLegend(encoding);
+    this.projection = this.initProjection(spec.projection);
 
     // Selections will be initialized upon parse.
     this.selection = spec.selection;
@@ -175,6 +178,13 @@ export class UnitModel extends Model {
     return {width, height};
   }
 
+  private initProjection(projection: Projection): Projection {
+    /*
+     * We aren't changing the projection at all, since VgProjection === Projection
+     */
+    return projection;
+  }
+
   private initAxes(encoding: Encoding): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
@@ -224,6 +234,10 @@ export class UnitModel extends Model {
 
   public parseScale() {
     this.component.scales = parseScaleComponent(this);
+  }
+
+  public parseProjection() {
+    this.component.projection = parseProjectionComponent(this);
   }
 
   public parseMark() {

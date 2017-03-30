@@ -11,6 +11,7 @@ import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
 import * as vlEncoding from './encoding';
 import * as log from './log';
 import {AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
+import {Projection} from './projection';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {TopLevelProperties} from './toplevelprops';
@@ -61,6 +62,11 @@ export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
 
   // FIXME description for top-level width
   height?: number;
+
+  /**
+   * A geo projection
+   */
+  projection?: Projection;
 
   /**
    * The mark type.

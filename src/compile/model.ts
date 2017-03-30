@@ -12,7 +12,7 @@ import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
 import {Dict, extend, vals} from '../util';
-import {VgAxis, VgData, VgEncodeEntry, VgLegend, VgScale} from '../vega.schema';
+import {VgAxis, VgData, VgEncodeEntry, VgLegend, VgProjection, VgScale} from '../vega.schema';
 
 import {StackProperties} from '../stack';
 import {DataComponent} from './data/data';
@@ -184,7 +184,7 @@ export abstract class Model {
     return vals(this.component.legends);
   }
 
-  public assembleProjections(): VgProjections[] {
+  public assembleProjections(): VgProjection[] {
     return vals(this.component.projections);
   }
 

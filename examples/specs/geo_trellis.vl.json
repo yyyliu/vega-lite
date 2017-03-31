@@ -1,0 +1,25 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+    "url": "data/literacy_rate.csv"
+  },
+  "mark": "geo",
+  "projection": {
+    "type": "mercator"
+  },
+  "encoding": {
+    "row": {
+      "field": "year",
+      "type": "ordinal"
+    },
+    "color": {
+      "value": "#000"
+    }
+  },
+  "config": {
+    "projection": {
+      "translate": [400, 250],
+      "center": [0, 0]
+    }
+  }
+}

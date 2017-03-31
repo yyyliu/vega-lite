@@ -1,0 +1,20 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+    "url": "data/demo-airports.csv"
+  },
+  "mark": "shape",
+  "projection": "albersUsa",
+  "encoding": {
+    "color": {
+      "value": "#000"
+    }
+  },
+  "config": {
+    "projection": {
+      "scale": 1000,
+      "translate": [400, 250],
+      "center": [0, 0]
+    }
+  }
+}

@@ -5,11 +5,12 @@ import {isUrlData} from '../data';
 import {FieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG} from '../mark';
+import {Projection} from '../projection';
 import {Scale} from '../scale';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Dict, flatten, keys} from '../util';
-import {isSignalRefDomain, VgData, VgEncodeEntry, VgScale} from '../vega.schema';
+import {isSignalRefDomain, VgData, VgEncodeEntry, VgProjection, VgScale} from '../vega.schema';
 
 import {applyConfig, buildModel} from './common';
 import {assembleData, parseLayerData} from './data/data';
@@ -26,6 +27,8 @@ export class LayerModel extends Model {
   protected readonly scales: Dict<Scale> = {};
 
   protected readonly axes: Dict<Axis> = {};
+
+  public readonly projection: Projection;
 
   protected readonly legends: Dict<Legend> = {};
 
@@ -159,6 +162,23 @@ export class LayerModel extends Model {
           if (!axisComponent[channel]) {
             axisComponent[channel] = child.component.axes[channel];
           }
+        });
+      }
+    });
+  }
+
+  public parseProjection() {
+    let projectionComponent:VgProjection[] = this.component.projections = [];
+
+    this.children.forEach(function(child) {
+      child.parseProjection();
+
+      // FIXME: correctly implement independent projection (similar to scale)
+      // Also need to check whether the projections are actually compatible, if ever
+
+      if (true) { // if shared/union projection
+        child.component.projections.forEach(function (projection) { // really should only be one
+          projectionComponent.push(projection);
         });
       }
     });

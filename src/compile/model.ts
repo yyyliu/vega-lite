@@ -28,8 +28,10 @@ export interface Component {
   data: DataComponent;
   layout: LayoutComponent;
   scales: Dict<VgScale>;
-  projection: VgProjection;
   selection: Dict<SelectionComponent>;
+
+  /** Array of projections, which don't use channel mapping */
+  projections: VgProjection[];
 
   /** Dictionary mapping channel to VgAxis definition */
   axes: Dict<VgAxis[]>;
@@ -130,7 +132,7 @@ export abstract class Model {
     this.description = spec.description;
     this.transforms = spec.transform || [];
 
-    this.component = {data: null, layout: null, mark: null, scales: null, projection: null, axes: null, axisGroups: null, gridGroups: null, legends: null, selection: null};
+    this.component = {data: null, layout: null, mark: null, scales: null, projections: null, axes: null, axisGroups: null, gridGroups: null, legends: null, selection: null};
   }
 
   public parse() {
@@ -189,8 +191,8 @@ export abstract class Model {
     return vals(this.component.legends);
   }
 
-  public assembleProjection(): VgProjection {
-    return this.component.projection;
+  public assembleProjection(): VgProjection[] {
+    return this.component.projections;
   }
 
   public assembleGroup() {
@@ -209,9 +211,9 @@ export abstract class Model {
       group.scales = scales;
     }
 
-    const projection = this.assembleProjection();
-    if (projection) {
-      group.projections = [projection];
+    const projections = this.assembleProjection();
+    if (projections.length > 0) {
+      group.projections = projections;
     }
 
     const axes = this.assembleAxes();

@@ -1,4 +1,5 @@
 import {BinBase} from './bin';
+import {ProjectionType} from './projection';
 import {NiceTime, ScaleType} from './scale';
 import {StackOffset} from './stack';
 import {isArray} from './util';
@@ -91,9 +92,16 @@ export type VgScale = {
 
 export type VgProjection = {
   /*
+   * The name of the projection.
+   */
+  name: string,
+
+  /*
    * The type of the projection.
    */
-  type?: string;
+  type: ProjectionType;
+
+  // TODO: move all below to config?
   /*
    * The center of the projection.
    */

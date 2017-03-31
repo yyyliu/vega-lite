@@ -23,6 +23,7 @@ import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
 import {Model} from './model';
+import {parseProjection} from './projection/parse';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
 import {assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks, assembleUnitSignals, parseUnitSelection} from './selection/selection';
@@ -237,7 +238,7 @@ export class UnitModel extends Model {
   }
 
   public parseProjection() {
-    this.component.projection = parseProjectionComponent(this);
+    this.component.projection = parseProjection(this);
   }
 
   public parseMark() {

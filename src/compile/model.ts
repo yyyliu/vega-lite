@@ -1,5 +1,3 @@
-
-
 import {Axis} from '../axis';
 import {Channel, COLUMN, X} from '../channel';
 import {CellConfig, Config} from '../config';
@@ -7,6 +5,7 @@ import {Data, DataSourceType, isNamedData, SOURCE} from '../data';
 import {forEach, reduce} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
+import {Projection} from '../projection';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
@@ -29,7 +28,7 @@ export interface Component {
   data: DataComponent;
   layout: LayoutComponent;
   scales: Dict<VgScale>;
-  projections: Dict<VgProjection>;
+  projection: VgProjection;
   selection: Dict<SelectionComponent>;
 
   /** Dictionary mapping channel to VgAxis definition */
@@ -106,6 +105,8 @@ export abstract class Model {
 
   public readonly config: Config;
 
+  public abstract readonly projection: Projection;
+
   public component: Component;
 
   public abstract readonly children: Model[] = [];
@@ -129,7 +130,7 @@ export abstract class Model {
     this.description = spec.description;
     this.transforms = spec.transform || [];
 
-    this.component = {data: null, layout: null, mark: null, scales: null, projections: null, axes: null, axisGroups: null, gridGroups: null, legends: null, selection: null};
+    this.component = {data: null, layout: null, mark: null, scales: null, projection: null, axes: null, axisGroups: null, gridGroups: null, legends: null, selection: null};
   }
 
   public parse() {
@@ -188,8 +189,8 @@ export abstract class Model {
     return vals(this.component.legends);
   }
 
-  public assembleProjections(): VgProjection[] {
-    return vals(this.component.projections);
+  public assembleProjection(): VgProjection {
+    return this.component.projection;
   }
 
   public assembleGroup() {
@@ -208,9 +209,9 @@ export abstract class Model {
       group.scales = scales;
     }
 
-    const projections = this.assembleProjections();
-    if (projections.length > 0) {
-      group.projections = projections;
+    const projection = this.assembleProjection();
+    if (projection) {
+      group.projections = [projection];
     }
 
     const axes = this.assembleAxes();
@@ -263,6 +264,10 @@ export abstract class Model {
 
   public abstract channelHasField(channel: Channel): boolean;
 
+  /**
+   * @param  {string} text suffix or unique name for model
+   * @param  {string='_'} delimiter seperator between model's name and suffix {text}
+   */
   public getName(text: string, delimiter: string = '_') {
     if (this.data && text === SOURCE && isNamedData(this.data)) {
       return this.data.name;

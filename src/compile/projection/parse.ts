@@ -1,7 +1,12 @@
 import {Model} from '../model';
+import {UnitModel} from '../unit';
 
 import {PROJECTION_PROPERTIES} from '../../projection';
 import {VgProjection} from '../../vega.schema';
+
+export function parseProjectionComponent(model: UnitModel): VgProjection[] {
+  return [parseProjection(model)];
+}
 
 /**
  * Parse projection on a model.

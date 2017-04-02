@@ -4,8 +4,10 @@
       "data": {
         "url": "data/demo-airports.csv"
       },
-      "mark": "shape",
-      "projection": "albersUsa",
+      "mark": "geoshape",
+      "projection": {
+        "type": "albersUsa"
+      },
       "encoding": {
         "color": {
           "value": "#000"
@@ -17,7 +19,9 @@
         "url": "data/demo-airports.csv"
       },
       "mark": "point",
-      "projection": "albersUsa",
+      "projection": {
+        "type": "albersUsa"
+      },
       "encoding": {
         "x": {
           "field": "longitude",
@@ -35,12 +39,7 @@
     }
   ],
   "config": {
-    "cell": {
-      "width": 800,
-      "height": 500
-    },
     "projection": {
-      "type": "albersUsa",
       "scale": 1000,
       "translate": [400, 250],
       "center": [0, 0]

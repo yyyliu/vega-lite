@@ -23,10 +23,6 @@
   "config": {
     "mark": {
       "filled": true
-    },
-    "cell": {
-      "width": 800,
-      "height": 500
     }
   }
 }

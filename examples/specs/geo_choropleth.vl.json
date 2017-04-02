@@ -3,18 +3,16 @@
   "data": {
     "url": "data/demo-airports.csv"
   },
-  "mark": "shape",
-  "projection": "albersUsa",
+  "mark": "geoshape",
+  "projection": {
+    "type": "albersUsa",
+    "scale": 1000,
+    "translate": [400, 250],
+    "center": [0, 0]
+  },
   "encoding": {
     "color": {
       "value": "#000"
-    }
-  },
-  "config": {
-    "projection": {
-      "scale": 1000,
-      "translate": [400, 250],
-      "center": [0, 0]
     }
   }
 }

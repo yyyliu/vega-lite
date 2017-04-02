@@ -99,9 +99,7 @@ export type VgProjection = {
   /*
    * The type of the projection.
    */
-  type: ProjectionType;
-
-  // TODO: move all below to config?
+  type?: ProjectionType;
   /*
    * The center of the projection.
    */

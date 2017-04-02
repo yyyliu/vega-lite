@@ -15,6 +15,7 @@ import {VgData} from '../vega.schema';
 
 import {SelectionDef} from '../selection';
 import {stack, StackProperties} from '../stack';
+import {LATITUDE, LONGITUDE} from '../type';
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
 import {assembleData, parseUnitData} from './data/data';
@@ -118,7 +119,7 @@ export class UnitModel extends Model {
     const xyRangeSteps: number[] = [];
 
     return UNIT_SCALE_CHANNELS.reduce((scales, channel) => {
-      if (vlEncoding.channelHasField(encoding, channel) ||
+      if (this.channelHasField(channel) ||
           (channel === X && vlEncoding.channelHasField(encoding, X2)) ||
           (channel === Y && vlEncoding.channelHasField(encoding, Y2))
         ) {
@@ -178,12 +179,48 @@ export class UnitModel extends Model {
 
     return {width, height};
   }
+  /*
+  private initLegend(encoding: Encoding, config: Config): Dict<Legend> {
+    return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
+      const channelDef = encoding[channel];
+      if (isFieldDef(channelDef)) {
+        const legendSpec = channelDef.legend;
+        if (legendSpec !== null && legendSpec !== false) {
+          _legend[channel] = {...legendSpec};
+        }
+      }
+      return _legend;
+    }, {});
+  }
+  */
 
-  private initProjection(projection: Projection): Projection {
-    /*
-     * We aren't changing the projection at all, since VgProjection === Projection
-     */
-    return projection;
+  private initProjection(projection: Projection, encoding: Encoding, config: Config): Projection {
+    let p = {};
+
+    if (projection) {
+      // projection explicitly defined in unit spec
+      p = {
+        ...config.projection,
+        ...projection
+      };
+    } else {
+      // TODO: don't harcode in "geoshape"
+      if (this.mark() === GEOSHAPE) {
+        // if mark is exclusively used for geoprojections, and projection is not explicitly defined, apply it anyway
+        p = config.projection;
+      } else {
+        // projection not explicitly defined in unit spec but is in config and spec uses projection (lat, lng, geomark)
+        UNIT_CHANNELS.forEach((channel) => {
+          const channelDef = encoding[channel];
+          if (isFieldDef(channelDef)
+            && (channelDef.type === LATITUDE || channelDef.type === LONGITUDE)) {
+            p = config.projection;
+          }
+        });
+      }
+    }
+
+    return p;
   }
 
   private initAxes(encoding: Encoding): Dict<Axis> {

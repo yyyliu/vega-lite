@@ -19,8 +19,7 @@ export function parseProjection(model: Model): VgProjection {
   }
 
   let projectionComponent: VgProjection = {
-    name: model.getName('projection'),
-    type: projection.type
+    name: model.getName('projection')
   };
 
   PROJECTION_PROPERTIES.forEach((property) => {

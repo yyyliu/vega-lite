@@ -5,6 +5,7 @@ import {contains} from '../../util';
 import {area} from './area';
 import {bar} from './bar';
 import {MarkCompiler} from './base';
+import {geoshape} from './geoshape';
 import {line} from './line';
 import {circle, point, square} from './point';
 import {rect} from './rect';
@@ -18,6 +19,7 @@ import {UnitModel} from '../unit';
 const markCompiler: {[type: string]: MarkCompiler} = {
   area: area,
   bar: bar,
+  geoshape: geoshape,
   line: line,
   point: point,
   text: text,

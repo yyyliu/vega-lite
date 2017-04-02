@@ -2,6 +2,7 @@ import {AxisConfig} from './axis';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import {BarConfig, MarkConfig, TextConfig, TickConfig} from './mark';
 import * as mark from './mark';
+import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
 import {StackOffset} from './stack';
@@ -170,6 +171,9 @@ export interface Config  extends TopLevelProperties {
   /** Scale Config */
   scale?: ScaleConfig;
 
+  /** Projection Config */
+  projection?: ProjectionConfig;
+
   /**
    * Scale range config, or properties defining named range arrays
    * that can be used within scale range definitions
@@ -258,6 +262,7 @@ export const defaultConfig: Config = {
 
   overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,
+  projection: {},
   axis: {},
   axisX: {},
   axisY: {},

@@ -1,3 +1,5 @@
+import {VgGeoShapeTransform} from '../../vega.schema';
+
 import {UnitModel} from '../unit';
 
 import {MarkCompiler} from './base';
@@ -9,6 +11,11 @@ export const geoshape: MarkCompiler = {
     return {};
   },
   transform: (model: UnitModel) => {
-    return {};
+    let t: VgGeoShapeTransform = {
+      type: 'geoshape',
+      projection: model.projection
+    };
+
+    return t;
   }
 };

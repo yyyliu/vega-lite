@@ -1,6 +1,7 @@
 import {UnitModel} from '../unit';
 import * as mixins from './mixins';
 
+import {VgGeoPointTransform} from '../../vega.schema';
 import {Config} from '../../config';
 import {getMarkConfig} from '../common';
 import {MarkCompiler} from './base';
@@ -20,6 +21,15 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   };
 }
 
+function transform(model: UnitModel) {
+  let t: VgGeoPointTransform = {
+    type: 'geopoint',
+    projection: model.projection
+  };
+
+  return t;
+}
+
 export function shapeMixins(model: UnitModel, config: Config, fixedShape?: 'circle' | 'square') {
   if (fixedShape) {
     return {shape: {value: fixedShape}};
@@ -32,6 +42,9 @@ export const point: MarkCompiler = {
   defaultRole: 'point',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model);
+  },
+  transform: (model: UnitModel) => {
+    return transform(model);
   }
 };
 
@@ -40,6 +53,9 @@ export const circle: MarkCompiler = {
   defaultRole: 'circle',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model, 'circle');
+  },
+  transform: (model: UnitModel) => {
+    return transform(model);
   }
 };
 
@@ -48,5 +64,8 @@ export const square: MarkCompiler = {
   defaultRole: 'square',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model, 'square');
+  },
+  transform: (model: UnitModel) => {
+    return transform(model);
   }
 };

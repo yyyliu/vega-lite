@@ -15,6 +15,7 @@ export interface MarkCompiler {
    * Basically for marks that are not Vega marks, we output roles for all of them.
    */
   defaultRole: 'bar' | 'point' | 'circle' | 'square' | 'tick' | 'geoshape' | undefined;
+
   encodeEntry: (model: UnitModel) => VgEncodeEntry;
 
   /**

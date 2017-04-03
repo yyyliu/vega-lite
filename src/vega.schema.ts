@@ -228,7 +228,17 @@ export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega 
 
 export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform;
 
-export type VgMarkTransform = any; /* TODO: add labeling, geoshape, geopath?, geopoint */
+export interface VgGeoPointTransform {
+  type: 'geopoint';
+  projection: ProjectionType;
+}
+
+export interface VgGeoShapeTransform {
+    type: 'geoshape';
+    projection: ProjectionType;
+}
+
+export type VgMarkTransform = VgGeoPointTransform | VgGeoShapeTransform | any; /* TODO: add labeling, geoshape, geopath?, geopoint */
 
 export interface VgStackTransform {
   type: 'stack';

@@ -182,6 +182,8 @@ export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega 
 
 export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | any;
 
+export type VgMarkTransform = any; /* TODO: add labeling, geoshape, geopath?, geopoint */
+
 export interface VgStackTransform {
   type: 'stack';
   offset?: StackOffset;

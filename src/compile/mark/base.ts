@@ -1,4 +1,4 @@
-import {VgEncodeEntry} from '../../vega.schema';
+import {VgEncodeEntry, VgMarkTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 
 /**
@@ -15,5 +15,11 @@ export interface MarkCompiler {
    * Basically for marks that are not Vega marks, we output roles for all of them.
    */
   defaultRole: 'bar' | 'point' | 'circle' | 'square' | 'tick' | undefined;
+
   encodeEntry: (model: UnitModel) => VgEncodeEntry;
+
+  /**
+   * Transform on a mark, used for layout (labeling) and projections
+   */
+  transform?: (model: UnitModel) => VgMarkTransform;
 }

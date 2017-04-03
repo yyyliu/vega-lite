@@ -54,6 +54,7 @@ function parsePathMark(model: UnitModel) {
   const mark = model.mark();
   // FIXME: replace this with more general case for composition
   const details = detailFields(model);
+  const transform = markCompiler[mark].transform(model);
 
   let pathMarks: any = [
     {
@@ -62,7 +63,8 @@ function parsePathMark(model: UnitModel) {
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
       from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + dataFrom(model)},
-      encode: {update: markCompiler[mark].encodeEntry(model)}
+      encode: {update: markCompiler[mark].encodeEntry(model)},
+      ...(transform ? {transform} : {}),
     }
   ];
 
@@ -85,6 +87,7 @@ function parsePathMark(model: UnitModel) {
           height: {field: {group: 'height'}}
         }
       },
+      ...(transform ? {transform} : {}),
       marks: pathMarks
     }];
   } else {
@@ -96,6 +99,7 @@ function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
 
   const role = model.markDef.role || markCompiler[mark].defaultRole;
+  const transform = markCompiler[mark].transform(model);
 
   let marks: any[] = []; // TODO: vgMarks
 
@@ -104,9 +108,10 @@ function parseNonPathMark(model: UnitModel) {
   marks.push({
     name: model.getName('marks'),
     type: markCompiler[mark].vgMark,
-    ...(role? {role} : {}),
+    ...(role ? {role} : {}),
     from: {data: dataFrom(model)},
-    encode: {update: markCompiler[mark].encodeEntry(model)}
+    encode: {update: markCompiler[mark].encodeEntry(model)},
+    ...(transform ? {transform} : {}),
   });
 
   return marks;

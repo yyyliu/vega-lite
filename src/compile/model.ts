@@ -31,7 +31,7 @@ export interface Component {
   selection: Dict<SelectionComponent>;
 
   /** Array of projections, which don't use channel mapping */
-  projections: VgProjection[];
+  projection: VgProjection[];
 
   /** Dictionary mapping channel to VgAxis definition */
   axes: Dict<VgAxis[]>;

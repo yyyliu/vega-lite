@@ -179,42 +179,28 @@ export class UnitModel extends Model {
 
     return {width, height};
   }
-  /*
-  private initLegend(encoding: Encoding, config: Config): Dict<Legend> {
-    return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
-      const channelDef = encoding[channel];
-      if (isFieldDef(channelDef)) {
-        const legendSpec = channelDef.legend;
-        if (legendSpec !== null && legendSpec !== false) {
-          _legend[channel] = {...legendSpec};
-        }
-      }
-      return _legend;
-    }, {});
-  }
-  */
 
-  private initProjection(projection: Projection, encoding: Encoding, config: Config): Projection {
+  private initProjection(projection: Projection, encoding: Encoding): Projection {
     let p = {};
 
     if (projection) {
       // projection explicitly defined in unit spec
       p = {
-        ...config.projection,
+        ...this.config.projection,
         ...projection
       };
     } else {
       // TODO: don't harcode in "geoshape"
       if (this.mark() === GEOSHAPE) {
         // if mark is exclusively used for geoprojections, and projection is not explicitly defined, apply it anyway
-        p = config.projection;
+        p = this.config.projection;
       } else {
         // projection not explicitly defined in unit spec but is in config and spec uses projection (lat, lng, geomark)
         UNIT_CHANNELS.forEach((channel) => {
           const channelDef = encoding[channel];
           if (isFieldDef(channelDef)
             && (channelDef.type === LATITUDE || channelDef.type === LONGITUDE)) {
-            p = config.projection;
+            p = this.config.projection;
           }
         });
       }

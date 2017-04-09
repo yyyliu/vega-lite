@@ -1,4 +1,4 @@
-export type ProjectionType = string;
+export type ProjectionType = string; // TOOD: ?
 
 export interface Projection {
   /*

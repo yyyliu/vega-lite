@@ -6,6 +6,7 @@ import {Facet} from '../facet';
 import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
+import {Projection} from '../projection';
 import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {contains, Dict, extend, flatten, keys, stringValue, vals} from '../util';
@@ -84,6 +85,11 @@ export class FacetModel extends ModelWithField {
   public parseData() {
     this.component.data = parseData(this);
     this.child.parseData();
+  }
+
+  public parseProjection() {
+    this.component.projections = this.child.component.projections;
+    this.child.component.projections = [];
   }
 
   public parseSelection() {

@@ -9,6 +9,7 @@ import {
   Field,
   FieldDef,
   isFieldDef,
+  isProjection,
   isValueDef,
   LegendFieldDef,
   normalize,
@@ -26,14 +27,14 @@ import {isArray, some} from './util';
 export interface Encoding<F> {
   /**
    * X coordinates for `point`, `circle`, `square`,
-   * `line`, `rule`, `text`, and `tick`
+   * `line`, `rule`, `text`, `geoshape` and `tick`
    * (or to width and height for `bar` and `area` marks).
    */
   x?: PositionFieldDef<F> | ValueDef<number>;
 
   /**
    * Y coordinates for `point`, `circle`, `square`,
-   * `line`, `rule`, `text`, and `tick`
+   * `line`, `rule`, `text`, `geoshape` and `tick`
    * (or to width and height for `bar` and `area` marks).
    */
   y?: PositionFieldDef<F> | ValueDef<number>;
@@ -52,7 +53,7 @@ export interface Encoding<F> {
 
   /**
    * Color of the marks – either fill or stroke color based on mark type.
-   * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
+   * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, `geoshape` and `square` /
    * stroke color for `line` and `point`.)
    */
   color?: LegendFieldDef<F, string> | ConditionalValueDef<string>;
@@ -113,6 +114,11 @@ export function channelHasField(encoding: EncodingWithFacet<Field>, channel: Cha
     }
   }
   return false;
+}
+
+export function channelIsProjection(encoding: EncodingWithFacet<Field>, channel: Channel) {
+  const channelDef = encoding && encoding[channel];
+  return channelDef && isFieldDef(channelDef) && isProjection(channelDef);
 }
 
 export function isAggregate(encoding: EncodingWithFacet<Field>) {

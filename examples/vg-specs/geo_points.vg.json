@@ -1,0 +1,151 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/airports.csv",
+            "format": {
+                "type": "csv",
+                "parse": {}
+            },
+            "transform": []
+        },
+        {
+            "name": "layout",
+            "values": [
+                {}
+            ],
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "21"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "21"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "projections": [
+                {
+                    "name": "projection",
+                    "type": "albersUsa"
+                }
+            ],
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "symbol",
+                    "role": "circle",
+                    "from": {
+                        "data": "source"
+                    },
+                    "encode": {
+                        "update": {
+                            "field": "latitude",
+                            "type": "latitude",
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
+                            "shape": {
+                                "value": "circle"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            }
+                        }
+                    },
+                    "transform": [
+                        {
+                            "type": "geopoint",
+                            "projection": "projection",
+                            "as": [
+                                "x",
+                                "y"
+                            ],
+                            "fields": [
+                                "longitude",
+                                "latitude"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "axes": [
+                {
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "longitude",
+                    "zindex": 1
+                },
+                {
+                    "domain": false,
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0
+                },
+                {
+                    "orient": "left",
+                    "title": "latitude",
+                    "zindex": 1
+                },
+                {
+                    "domain": false,
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0
+                }
+            ]
+        }
+    ]
+}

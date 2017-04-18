@@ -1,0 +1,26 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+    "url": "data/us-10m.json",
+    "format": {
+      "type": "topojson",
+      "feature": "counties"
+    }
+  },
+  "mark": "geoshape",
+  "projection": {
+    "type": "albersUsa"
+  },
+  "encoding": {
+    "color": {
+      "value": "#4682b4"
+    },
+    "opacity": {
+      "value": 0.7
+    },
+    "row": {
+      "field": "year",
+      "type": "ordinal"
+    }
+  }
+}

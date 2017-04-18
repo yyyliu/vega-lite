@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "projection": {
+    "type": "albersUsa"
+  },
+  "layer": [{
+      "data": {
+        "url": "data/us-10m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "counties"
+        }
+      },
+      "mark": "geoshape",
+      "encoding": {
+        "color": {
+          "value": "#4682b4"
+        },
+        "opacity": {
+          "value": 0.7
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/airports.json"
+      },
+      "mark": "circle",
+      "encoding": {
+        "x": {
+          "field": "longitude",
+          "type": "longitude"
+        },
+        "y": {
+          "field": "latitude",
+          "type": "latitude"
+        }
+      }
+    }
+  ]
+}

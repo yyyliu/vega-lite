@@ -57,13 +57,24 @@
             "type": "group",
             "signals": [
                 {
+                    "name": "grid_x",
+                    "value": [],
+                    "on": []
+                },
+                {
                     "name": "grid_Horsepower",
                     "on": [
                         {
                             "events": {
+                                "signal": "grid_x"
+                            },
+                            "update": "invert(\"x\", grid_x)"
+                        },
+                        {
+                            "events": {
                                 "signal": "grid_translate_delta"
                             },
-                            "update": "[grid_translate_anchor.extent_x[0] - abs(span(grid_translate_anchor.extent_x)) * grid_translate_delta.x / grid_translate_anchor.width, grid_translate_anchor.extent_x[1] - abs(span(grid_translate_anchor.extent_x)) * grid_translate_delta.x / grid_translate_anchor.width]"
+                            "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width]"
                         },
                         {
                             "events": {
@@ -75,13 +86,24 @@
                     "push": "outer"
                 },
                 {
+                    "name": "grid_y",
+                    "value": [],
+                    "on": []
+                },
+                {
                     "name": "grid_Miles_per_Gallon",
                     "on": [
                         {
                             "events": {
+                                "signal": "grid_y"
+                            },
+                            "update": "invert(\"y\", grid_y)"
+                        },
+                        {
+                            "events": {
                                 "signal": "grid_translate_delta"
                             },
-                            "update": "[grid_translate_anchor.extent_y[0] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height, grid_translate_anchor.extent_y[1] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height]"
+                            "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height]"
                         },
                         {
                             "events": {
@@ -107,7 +129,7 @@
                                     "type": "mousedown"
                                 }
                             ],
-                            "update": "{x: x(unit), y: y(unit), width: unit.width, height: unit.height, extent_x: domain(\"x\"), extent_y: domain(\"y\"), }"
+                            "update": "{x: x(unit), y: y(unit), extent_x: domain(\"x\"), extent_y: domain(\"y\")}"
                         }
                     ]
                 },

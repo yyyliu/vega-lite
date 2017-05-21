@@ -6,10 +6,9 @@ import {GEOSHAPE, Mark} from '../../mark';
 import {Projection} from '../../projection';
 import {LATITUDE, LONGITUDE} from '../../type';
 
-export function initProjection(config: Config, projection: Projection = {}, firstSiblingProjection: Projection = {}, parentProjection: Projection = {}, mark?: Mark, encoding?: Encoding<Field>): Projection {
+export function initProjection(config: Config, projection: Projection = {}, parentProjection: Projection = {}, mark?: Mark, encoding?: Encoding<Field>): Projection {
   const p = {
     ...config.projection,
-    ...firstSiblingProjection,
     ...parentProjection,
     ...projection
   } as Projection;

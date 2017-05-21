@@ -78,8 +78,6 @@ export class UnitModel extends ModelWithField {
     const providedWidth = spec.width || parentUnitSize.width;
     const providedHeight = spec.height || parentUnitSize.height;
 
-    const parentProjection = parent ? parent.projection : undefined;
-
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
     const encoding = this.encoding = normalizeEncoding(replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
 
@@ -93,6 +91,9 @@ export class UnitModel extends ModelWithField {
     this.axes = this.initAxes(encoding);
     this.legends = this.initLegend(encoding);
 
+    // TODO: in parent, if no projection is specified, and some child has a projection
+    //       set projection equal to the first projection found in children (from first child to last child)
+    const parentProjection = parent ? parent.projection : {};
     this.projection = initProjection(this.config, spec.projection, parentProjection, mark, encoding);
 
     // Selections will be initialized upon parse.
@@ -145,14 +146,14 @@ export class UnitModel extends ModelWithField {
     }
   }
 
-  private initScales(mark: Mark, encoding: Encoding<string>, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
+  private initScales(mark: Mark, encoding: Encoding<string>, topLevelWidth: number, topLevelHeight: number): Dict<Scale> {
     const xyRangeSteps: number[] = [];
 
     return UNIT_SCALE_CHANNELS.reduce((scales, channel) => {
       if ((vlEncoding.channelHasField(encoding, channel) ||
-          (channel === X && vlEncoding.channelHasField(encoding, X2)) ||
-          (channel === Y && vlEncoding.channelHasField(encoding, Y2))) &&
-          !vlEncoding.channelIsProjection(encoding, channel)
+        (channel === X && vlEncoding.channelHasField(encoding, X2)) ||
+        (channel === Y && vlEncoding.channelHasField(encoding, Y2))) &&
+        !vlEncoding.channelIsProjection(encoding, channel)
       ) {
         const scale = scales[channel] = initScale(
           channel, encoding[channel], this.config, mark,
@@ -212,13 +213,13 @@ export class UnitModel extends ModelWithField {
   }
 
   private initAxes(encoding: Encoding<string>): Dict<Axis> {
-    return [X, Y].reduce(function(_axis, channel) {
+    return [X, Y].reduce(function (_axis, channel) {
       // Position Axis
       const channelDef = encoding[channel];
       if ((isFieldDef(channelDef) ||
-          (channel === X && isFieldDef(encoding.x2)) ||
-          (channel === Y && isFieldDef(encoding.y2))
-        ) && !isProjection(channelDef)) {
+        (channel === X && isFieldDef(encoding.x2)) ||
+        (channel === Y && isFieldDef(encoding.y2))
+      ) && !isProjection(channelDef)) {
 
         const axisSpec = isFieldDef(channelDef) ? channelDef.axis : null;
 
@@ -234,7 +235,7 @@ export class UnitModel extends ModelWithField {
   }
 
   private initLegend(encoding: Encoding<string>): Dict<Legend> {
-    return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
+    return NONSPATIAL_SCALE_CHANNELS.reduce(function (_legend, channel) {
       const channelDef = encoding[channel];
       if (isFieldDef(channelDef)) {
         const legendSpec = channelDef.legend;
@@ -275,7 +276,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public assembleData(): VgData[] {
-     if (!this.parent) {
+    if (!this.parent) {
       // only assemble data in the root
       return assembleData(this.component.data);
     }

@@ -10,7 +10,7 @@ import {parseUnitModel} from '../../util';
 import {SCALE_PROPERTIES} from '../../../src/scale';
 import {toSet, without} from '../../../src/util';
 
-describe('src/compile', function() {
+describe('compile/scale', function() {
   it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES wihtout type, domain, and range properties', () => {
     assert.deepEqual(
       toSet(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES),
@@ -18,7 +18,7 @@ describe('src/compile', function() {
     );
   });
 
-  describe('parseScale', () => {
+  describe('parse', () => {
     describe('x ordinal point', () => {
       it('should create an x point scale with rangeStep and no range', () => {
         const model = parseUnitModel({

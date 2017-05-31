@@ -209,3 +209,12 @@ export function varName(s: string): string {
   // Add _ if the string has leading numbers.
   return (s.match(/^\d+/) ? '_' : '') + alphanumericS;
 }
+
+// Executes the cb function if the array does not contain an element with the given name.
+export function ifNoName(array: any[], name: string, cb: Function) {
+  const hasName = array.filter((e) => e.name === name);
+  if (!hasName.length) {
+    return cb();
+  }
+  return hasName[0];
+}

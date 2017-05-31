@@ -2,7 +2,7 @@ import {selector as parseSelector} from 'vega-event-selector';
 import {Channel} from '../../channel';
 import {SelectionDomain as SelectionScaleDomain} from '../../scale';
 import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
-import {Dict, extend, isString, stringValue} from '../../util';
+import {Dict, extend, ifNoName, isString, stringValue} from '../../util';
 import {VgBinding, VgData} from '../../vega.schema';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
@@ -146,14 +146,13 @@ export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
   });
 
   if (needsUnit) {
-    const hasUnit = signals.filter((s) => s.name === 'unit');
-    if (!(hasUnit.length)) {
+    ifNoName(signals, 'unit', () => {
       signals.unshift({
         name: 'unit',
         value: {},
         on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
       });
-    }
+    });
   }
 
   return signals;
@@ -161,10 +160,9 @@ export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
 
 export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[] {
   forEachSelection(model, selCmpt => {
-    const contains = data.filter((d) => d.name === selCmpt.name + STORE);
-    if (!contains.length) {
+    ifNoName(data, selCmpt.name + STORE, () => {
       data.push({name: selCmpt.name + STORE});
-    }
+    });
   });
 
   return data;

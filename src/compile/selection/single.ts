@@ -1,4 +1,4 @@
-import {stringValue} from '../../util';
+import {ifNoName, stringValue} from '../../util';
 import multi from './multi';
 import {SelectionCompiler, STORE, TUPLE} from './selection';
 
@@ -8,11 +8,14 @@ const single:SelectionCompiler = {
   signals: multi.signals,
 
   topLevelSignals: function(model, selCmpt, signals) {
-    const hasSignal = signals.filter((s) => s.name === selCmpt.name);
-    return hasSignal.length ? signals : signals.concat({
-      name: selCmpt.name,
-      update: `data(${stringValue(selCmpt.name + STORE)})[0]`
+    ifNoName(signals, selCmpt.name, () => {
+      signals.push({
+        name: selCmpt.name,
+        update: `data(${stringValue(selCmpt.name + STORE)})[0]`
+      });
     });
+
+    return signals;
   },
 
   tupleExpr: function(model, selCmpt) {

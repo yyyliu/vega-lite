@@ -65,13 +65,14 @@ export {translate as default};
 
 function deltaNormSignal(model: UnitModel, selCmpt: SelectionComponent, projection: ProjectComponent, events: any[], signals: any[]) {
   if (scalesCompiler.has(selCmpt)) {
+    const anchor = selCmpt.name + ANCHOR;
     const anchorNorm = ifNoName(signals, ANCHOR, () => {
       const sg:any = {name: ANCHOR, push: 'outer', on: []};
       return (signals.push(sg), sg);
     });
 
-    anchorNorm.on.push({events: events.map((e) => e.between[0]), update: 'true'},
-      {events: events.map((e) => e.between[1]), update: 'false'});
+    anchorNorm.on.push({events: events.map((e) => e.between[0]), update: `${anchor}`},
+      {events: events.map((e) => e.between[1]), update: 'null'});
 
     const delta = selCmpt.name + DELTA,
         deltaNormName = normSignalName(selCmpt, projection.encoding, DELTA),
@@ -96,19 +97,25 @@ function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel
       signal:any = signals.filter((s:any) => {
         return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
       })[0],
-      anchor = name + ANCHOR,
-      delta  = name + DELTA,
-      norm = normSignalName(selCmpt, channel, DELTA),
-      sign = getSign(selCmpt, channel),
-      offset = sign + (hasScales ?
-        ` span(${anchor}.extent_${channel}) * ${norm}` :
-        ` ${delta}.${channel}`),
-      extent = `${anchor}.extent_${channel}`,
-      range = `[${extent}[0] ${offset}, ${extent}[1] ${offset}]`;
+      sign = getSign(selCmpt, channel);
+
+  let anchor: string, delta: string, offset: string;
+  if (hasScales) {
+    anchor = ANCHOR;
+    delta  = normSignalName(selCmpt, channel, DELTA);
+    offset = `span(${anchor}.extent_${channel}) * ${delta}`
+  } else {
+    anchor = name + ANCHOR;
+    delta  = name + DELTA;
+    offset = `${delta}.${channel}`;
+  }
+
+  const extent = `${anchor}.extent_${channel}`,
+    range = `[${extent}[0] ${sign} ${offset}, ${extent}[1] ${sign} ${offset}]`;
 
   signal.on.push({
-    events: {signal: hasScales ? norm : delta},
-    update: hasScales ? range : `clampRange(${range}, 0, unit.${size})`
+    events: {signal: delta},
+    update: (hasScales ? range : `clampRange(${range}, 0, unit.${size})`)
   });
 }
 

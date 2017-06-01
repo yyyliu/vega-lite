@@ -74,7 +74,7 @@ function anchorNormSignal(model: UnitModel, selCmpt: SelectionComponent, project
         size = model.getSizeSignalRef(enc === X ? 'width' : 'height').signal;
 
     anchorNorm.on.push({
-      events: events, update: `{${enc}: ${enc}(unit) / ${size}, delta: ${delta}}`
+      events: events, update: `{coord: ${enc}(unit) / ${size}, delta: ${delta}}`
     });
   }
 }

@@ -176,7 +176,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
       anchor = name + TRANSLATE_ANCHOR,
       panNorm = normSignalName(selCmpt, channel, TRANSLATE_DELTA),
       zoomNorm = normSignalName(selCmpt, channel, ZOOM_ANCHOR),
-      zoomAnchor = `(${zoomNorm}.${channel} * ${size})`;
+      zoomAnchor = `(${zoomNorm}.coord * ${size})`;
 
   let on: any[] = [], signals: any[] = [];
 

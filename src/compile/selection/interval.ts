@@ -1,11 +1,13 @@
 import {Channel, X, Y} from '../../channel';
 import {warn} from '../../log';
-import {extend, keys, stringValue} from '../../util';
+import {extend, ifNoName, keys, stringValue} from '../../util';
 import {UnitModel} from '../unit';
 import {channelSignalName, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
+import {ANCHOR as TRANSLATE_ANCHOR, DELTA as TRANSLATE_DELTA} from './transforms/translate';
 
-export const BRUSH = '_brush';
+export const BRUSH = '_brush',
+  NORM = '_norm';
 
 const interval:SelectionCompiler = {
   predicate: 'vlInterval',
@@ -29,15 +31,36 @@ const interval:SelectionCompiler = {
         return;
       }
 
-      const cs = channelSignals(model, selCmpt, p.encoding);
+      const cs = channelSignals(model, selCmpt, p.encoding),
+        csName = channelSignalName(selCmpt, p.encoding, 'data');
       signals.push.apply(signals, cs);
       intervals.push(`{encoding: ${stringValue(p.encoding)}, ` +
-      `field: ${stringValue(p.field)}, extent: ${cs[1].name}}`);
+      `field: ${stringValue(p.field)}, extent: ${csName}}`);
     });
 
-    signals.push({
-      name: name,
-      update: `[${intervals.join(', ')}]`
+    return signals.concat({name: name, update: `[${intervals.join(', ')}]`});
+  },
+
+  // Always add topLevelSignals for scale pan/zoom normalized delta/anchor signals.
+  // This simplifies the bookkeeping the compiler has to do -- the signals always
+  // exist even if they're never used.
+  topLevelSignals: function(model, selCmpt, signals) {
+    const {x, y} = projections(selCmpt);
+    let normName = '';
+    [TRANSLATE_DELTA].forEach((name) => {
+      if (x !== null) {
+        normName = normSignalName(selCmpt, X, name);
+        ifNoName(signals, normName, () => signals.push({name: normName}));
+      }
+
+      if (y !== null) {
+        normName = normSignalName(selCmpt, Y, name);
+        ifNoName(signals, normName, () => signals.push({name: normName}));
+      }
+    });
+
+    ifNoName(signals, TRANSLATE_ANCHOR, () => {
+      signals.push({name: TRANSLATE_ANCHOR});
     });
 
     return signals;
@@ -131,33 +154,45 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
       hasScales = scales.has(selCmpt),
       scale = stringValue(model.scaleName(channel)),
       size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal,
-      coord = `${channel}(unit)`;
+      coord = `${channel}(unit)`,
+      anchor = name + TRANSLATE_ANCHOR,
+      deltaNorm = normSignalName(selCmpt, channel, TRANSLATE_DELTA);
 
-  return [{
-    name: name,
-    value: [],
-    on: hasScales ? [] : events(selCmpt, function(on: any[], evt: any) {
-      on.push({
-        events: evt.between[0],
-        update: `[${coord}, ${coord}]`
-      });
+  let on: any[] = [], signals: any[] = [];
 
-      on.push({
-        events: evt,
-        update: `[${name}[0], clamp(${coord}, 0, ${size})]`
-      });
+  if (!hasScales) {
+    on = events(selCmpt, function(def: any[], evt: any) {
+      return def.concat(
+        {events: evt.between[0], update: `[${coord}, ${coord}]`},           // Brush start
+        {events: evt, update: `[${name}[0], clamp(${coord}, 0, ${size})]`}  // Brush end
+      );
+    });
 
-      return on;
-    })
-  }, {
-    name: channelSignalName(selCmpt, channel, 'data'),
-    on: [
-      {
-        events: {signal: name},
-        update: `invert(${scale}, ${name})`
+    // Ensure brush reacts to norm signals (i.e., panning/zooming of scales
+    // by another selection).
+    on.push({
+      events: {signal: deltaNorm},
+      update: `[${anchor}[0] + ${size} * ${deltaNorm}, ` +
+        `${anchor}[1] + ${size} * ${deltaNorm}]`
+    });
+
+    signals = [
+      {name: name, value: [], on: on},  // Pixel-space signal.
+      { name: name + TRANSLATE_ANCHOR,  // Anchor signal to react to norm signals.
+        value: [],
+        on: [{events: {signal: TRANSLATE_ANCHOR}, update: `slice(${name})`}]
       }
+    ];
+  }
+
+  // Finally, add the data space signal.
+  return signals.concat({
+    name: channelSignalName(selCmpt, channel, 'data'),
+    on: hasScales ? [] : [
+      { events: {signal: name},
+        update: `span(${name}) === 0 ? [] : invert(${scale}, ${name})`}
     ]
-  }];
+  });
 }
 
 function events(selCmpt: SelectionComponent, cb: Function) {
@@ -168,4 +203,8 @@ function events(selCmpt: SelectionComponent, cb: Function) {
     }
     return cb(on, evt);
   }, []);
+}
+
+export function normSignalName(selCmpt: SelectionComponent, channel: Channel, signal: string) {
+  return selCmpt.fields[channel] + signal + NORM;
 }

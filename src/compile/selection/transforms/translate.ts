@@ -1,13 +1,13 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {Channel, X, Y} from '../../../channel';
-import {stringValue} from '../../../util';
-import {BRUSH as INTERVAL_BRUSH, projections as intervalProjections} from '../interval';
-import {channelSignalName, SelectionComponent} from '../selection';
+import {ifNoName, stringValue} from '../../../util';
+import {BRUSH as INTERVAL_BRUSH, NORM, normSignalName, projections as intervalProjections} from '../interval';
+import {channelSignalName, ProjectComponent, SelectionComponent} from '../selection';
 import {UnitModel} from './../../unit';
 import {default as scalesCompiler, domain} from './scales';
 import {TransformCompiler} from './transforms';
 
-const ANCHOR = '_translate_anchor',
+export const ANCHOR = '_translate_anchor',
       DELTA  = '_translate_delta';
 
 const translate:TransformCompiler = {
@@ -40,7 +40,7 @@ const translate:TransformCompiler = {
       }]
     }, {
       name: name + DELTA,
-      value: {},
+      value: {x: 0, y: 0},
       on: [{
         events: events,
         update: `{x: x(unit) - ${anchor}.x, y: y(unit) - ${anchor}.y}`
@@ -48,10 +48,12 @@ const translate:TransformCompiler = {
     });
 
     if (x !== null) {
+      deltaNormSignal(model, selCmpt, x, events, signals);
       onDelta(model, selCmpt, X, 'width', signals);
     }
 
     if (y !== null) {
+      deltaNormSignal(model, selCmpt, y, events, signals);
       onDelta(model, selCmpt, Y, 'height', signals);
     }
 
@@ -61,11 +63,31 @@ const translate:TransformCompiler = {
 
 export {translate as default};
 
-function getSign(selCmpt: SelectionComponent, channel: Channel) {
+function deltaNormSignal(model: UnitModel, selCmpt: SelectionComponent, projection: ProjectComponent, events: any[], signals: any[]) {
   if (scalesCompiler.has(selCmpt)) {
-    return channel === Y ? '+' : '-';
+    const anchorNorm = ifNoName(signals, ANCHOR, () => {
+      const sg:any = {name: ANCHOR, push: 'outer', on: []};
+      return (signals.push(sg), sg);
+    });
+
+    anchorNorm.on.push({events: events.map((e) => e.between[0]), update: 'true'},
+      {events: events.map((e) => e.between[1]), update: 'false'});
+
+    const delta = selCmpt.name + DELTA,
+        deltaNormName = normSignalName(selCmpt, projection.encoding, DELTA),
+        size = model.getSizeSignalRef(projection.encoding === X ? 'width' : 'height').signal;
+
+    const deltaNorm = ifNoName(signals, deltaNormName, () => {
+      const sg:any = {name: deltaNormName, push: 'outer', on: []};
+      return (signals.push(sg), sg);
+    });
+
+    deltaNorm.on.push({
+      events: {signal: delta},
+      update: `${delta}.${projection.encoding} / ${size}`,
+      force: true
+    });
   }
-  return '+';
 }
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: 'width' | 'height', signals: any[]) {
@@ -76,15 +98,23 @@ function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel
       })[0],
       anchor = name + ANCHOR,
       delta  = name + DELTA,
+      norm = normSignalName(selCmpt, channel, DELTA),
       sign = getSign(selCmpt, channel),
       offset = sign + (hasScales ?
-        ` span(${anchor}.extent_${channel}) * ${delta}.${channel} / unit.${size}` :
+        ` span(${anchor}.extent_${channel}) * ${norm}` :
         ` ${delta}.${channel}`),
       extent = `${anchor}.extent_${channel}`,
       range = `[${extent}[0] ${offset}, ${extent}[1] ${offset}]`;
 
   signal.on.push({
-    events: {signal: delta},
+    events: {signal: hasScales ? norm : delta},
     update: hasScales ? range : `clampRange(${range}, 0, unit.${size})`
   });
+}
+
+function getSign(selCmpt: SelectionComponent, channel: Channel) {
+  if (scalesCompiler.has(selCmpt)) {
+    return channel === Y ? '+' : '-';
+  }
+  return '+';
 }

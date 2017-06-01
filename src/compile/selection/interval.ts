@@ -7,7 +7,8 @@ import scales from './transforms/scales';
 import {ANCHOR as TRANSLATE_ANCHOR, DELTA as TRANSLATE_DELTA} from './transforms/translate';
 import {ANCHOR as ZOOM_ANCHOR} from './transforms/zoom';
 
-export const BRUSH = '_brush',
+export const ACTIVE = '_active',
+  BRUSH = '_brush',
   NORM = '_norm';
 
 const interval:SelectionCompiler = {
@@ -19,10 +20,12 @@ const interval:SelectionCompiler = {
         name = selCmpt.name;
 
     if (selCmpt.translate && !(scales.has(selCmpt))) {
+      const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
       events(selCmpt, function(_: any[], evt: any) {
         const filters = evt.between[0].filter || (evt.between[0].filter = []);
-        filters.push('!event.item || (event.item && ' +
-          `event.item.mark.name !== ${stringValue(name + BRUSH)})`);
+        if (filters.indexOf(filterExpr) < 0) {
+          filters.push(filterExpr);
+        }
       });
     }
 
@@ -38,6 +41,14 @@ const interval:SelectionCompiler = {
       intervals.push(`{encoding: ${stringValue(p.encoding)}, ` +
       `field: ${stringValue(p.field)}, extent: ${csName}}`);
     });
+
+    if (selCmpt.resolve === 'global' && !scales.has(selCmpt)) {
+      signals.push({
+        name: name + ACTIVE,
+        push: 'outer',
+        on: [{events: selCmpt.events, update: stringValue(model.getName(''))}]
+      });
+    }
 
     return signals.concat({name: name, update: `[${intervals.join(', ')}]`});
   },
@@ -63,6 +74,12 @@ const interval:SelectionCompiler = {
     ifNoName(signals, TRANSLATE_ANCHOR, () => {
       signals.push({name: TRANSLATE_ANCHOR});
     });
+
+    if (selCmpt.resolve === 'global' && !scales.has(selCmpt)) {
+      ifNoName(signals, selCmpt.name + ACTIVE, () => {
+        signals.push({name: selCmpt.name + ACTIVE});
+      });
+    }
 
     return signals;
   },
@@ -102,7 +119,7 @@ const interval:SelectionCompiler = {
     if (selCmpt.resolve === 'global') {
       keys(update).forEach(function(key) {
         update[key] = [{
-          test: `${store}.length && ${tpl} && ${tpl}.unit === ${store}[0].unit`,
+          test: `${name + ACTIVE} === ${stringValue(model.getName(''))}`,
           ...update[key]
         }, {value: 0}];
       });
@@ -172,14 +189,18 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
     });
 
     // Ensure brush reacts to norm signals (i.e., panning/zooming of scales
-    // by another selection).
+    // by another selection). For globally-resolved intervals, the brush should
+    // only react if it is active.
+    const condition = selCmpt.resolve !== 'global' ? '' :
+        `${selCmpt.name + ACTIVE} !== ${stringValue(model.getName(''))} ? ${name} :`;
+
     on.push({
       events: {signal: panNorm},
-      update: `[${anchor}[0] + ${size} * ${panNorm}, ` +
+      update: `${condition} [${anchor}[0] + ${size} * ${panNorm}, ` +
         `${anchor}[1] + ${size} * ${panNorm}]`
     }, {
       events: {signal: zoomNorm},
-      update: `[${zoomAnchor} + (${name}[0] - ${zoomAnchor}) / ${zoomNorm}.delta, ` +
+      update: `${condition} [${zoomAnchor} + (${name}[0] - ${zoomAnchor}) / ${zoomNorm}.delta, ` +
         `${zoomAnchor} + (${name}[1] - ${zoomAnchor}) / ${zoomNorm}.delta]`
     });
 
@@ -193,11 +214,12 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   }
 
   // Finally, add the data space signal.
+  const dataSg = channelSignalName(selCmpt, channel, 'data');
   return signals.concat({
-    name: channelSignalName(selCmpt, channel, 'data'),
+    name: dataSg,
     on: hasScales ? [] : [
       { events: {signal: name},
-        update: `span(${name}) === 0 ? [] : invert(${scale}, ${name})`}
+        update: `span(${name}) === 0 ? ${dataSg} : invert(${scale}, ${name})`}
     ]
   });
 }

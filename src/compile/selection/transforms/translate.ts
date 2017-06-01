@@ -103,7 +103,7 @@ function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel
   if (hasScales) {
     anchor = ANCHOR;
     delta  = normSignalName(selCmpt, channel, DELTA);
-    offset = `span(${anchor}.extent_${channel}) * ${delta}`
+    offset = `span(${anchor}.extent_${channel}) * ${delta}`;
   } else {
     anchor = name + ANCHOR;
     delta  = name + DELTA;

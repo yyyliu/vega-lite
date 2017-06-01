@@ -1,13 +1,13 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {Channel, X, Y} from '../../../channel';
-import {stringValue} from '../../../util';
-import {BRUSH as INTERVAL_BRUSH, projections as intervalProjections} from '../interval';
-import {channelSignalName, SelectionComponent} from '../selection';
+import {ifNoName, stringValue} from '../../../util';
+import {BRUSH as INTERVAL_BRUSH, normSignalName, projections as intervalProjections} from '../interval';
+import {channelSignalName, ProjectComponent, SelectionComponent} from '../selection';
 import {UnitModel} from './../../unit';
 import {default as scalesCompiler, domain} from './scales';
 import {TransformCompiler} from './transforms';
 
-const ANCHOR = '_zoom_anchor',
+export const ANCHOR = '_zoom_anchor',
       DELTA  = '_zoom_delta';
 
 const zoom:TransformCompiler = {
@@ -41,16 +41,18 @@ const zoom:TransformCompiler = {
       name: delta,
       on: [{
         events: events,
+        update: 'pow(1.001, event.deltaY * pow(16, event.deltaMode))',
         force: true,
-        update: 'pow(1.001, event.deltaY * pow(16, event.deltaMode))'
       }]
     });
 
     if (x !== null) {
+      anchorNormSignal(model, selCmpt, x, events, signals);
       onDelta(model, selCmpt, 'x', 'width', signals);
     }
 
     if (y !== null) {
+      anchorNormSignal(model, selCmpt, y, events, signals);
       onDelta(model, selCmpt, 'y', 'height', signals);
     }
 
@@ -59,6 +61,23 @@ const zoom:TransformCompiler = {
 };
 
 export {zoom as default};
+
+function anchorNormSignal(model: UnitModel, selCmpt: SelectionComponent, projection: ProjectComponent, events: any[], signals: any[]) {
+  if (scalesCompiler.has(selCmpt)) {
+    const delta = selCmpt.name + DELTA,
+        enc = projection.encoding,
+        anchorNormName = normSignalName(selCmpt, enc, ANCHOR),
+        anchorNorm = ifNoName(signals, anchorNormName, () => {
+          const sg:any = {name: anchorNormName, push: 'outer', on: []};
+          return (signals.push(sg), sg);
+        }),
+        size = model.getSizeSignalRef(enc === X ? 'width' : 'height').signal;
+
+    anchorNorm.on.push({
+      events: events, update: `{${enc}: ${enc}(unit) / ${size}, delta: ${delta}}`
+    });
+  }
+}
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: 'width' | 'height', signals: any[]) {
   const name = selCmpt.name,

@@ -5,6 +5,7 @@ import {UnitModel} from '../unit';
 import {channelSignalName, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
 import {ANCHOR as TRANSLATE_ANCHOR, DELTA as TRANSLATE_DELTA} from './transforms/translate';
+import {ANCHOR as ZOOM_ANCHOR} from './transforms/zoom';
 
 export const BRUSH = '_brush',
   NORM = '_norm';
@@ -47,7 +48,7 @@ const interval:SelectionCompiler = {
   topLevelSignals: function(model, selCmpt, signals) {
     const {x, y} = projections(selCmpt);
     let normName = '';
-    [TRANSLATE_DELTA].forEach((name) => {
+    [TRANSLATE_DELTA, ZOOM_ANCHOR].forEach((name) => {
       if (x !== null) {
         normName = normSignalName(selCmpt, X, name);
         ifNoName(signals, normName, () => signals.push({name: normName}));
@@ -156,7 +157,9 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
       size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal,
       coord = `${channel}(unit)`,
       anchor = name + TRANSLATE_ANCHOR,
-      deltaNorm = normSignalName(selCmpt, channel, TRANSLATE_DELTA);
+      panNorm = normSignalName(selCmpt, channel, TRANSLATE_DELTA),
+      zoomNorm = normSignalName(selCmpt, channel, ZOOM_ANCHOR),
+      zoomAnchor = `(${zoomNorm}.${channel} * ${size})`;
 
   let on: any[] = [], signals: any[] = [];
 
@@ -171,9 +174,13 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
     // Ensure brush reacts to norm signals (i.e., panning/zooming of scales
     // by another selection).
     on.push({
-      events: {signal: deltaNorm},
-      update: `[${anchor}[0] + ${size} * ${deltaNorm}, ` +
-        `${anchor}[1] + ${size} * ${deltaNorm}]`
+      events: {signal: panNorm},
+      update: `[${anchor}[0] + ${size} * ${panNorm}, ` +
+        `${anchor}[1] + ${size} * ${panNorm}]`
+    }, {
+      events: {signal: zoomNorm},
+      update: `[${zoomAnchor} + (${name}[0] - ${zoomAnchor}) / ${zoomNorm}.delta, ` +
+        `${zoomAnchor} + (${name}[1] - ${zoomAnchor}) / ${zoomNorm}.delta]`
     });
 
     signals = [

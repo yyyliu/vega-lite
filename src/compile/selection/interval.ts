@@ -90,9 +90,17 @@ const interval:SelectionCompiler = {
   },
 
   modifyExpr: function(model, selCmpt) {
-    const tpl = selCmpt.name + TUPLE;
-    return tpl + ', ' +
-      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${tpl}.unit}`);
+    const name = selCmpt.name,
+      tpl = name + TUPLE,
+      modelName = stringValue(model.getName(''));
+
+    if (selCmpt.resolve === 'global') {
+      return (!scales.has(selCmpt) ?
+        `${name + ACTIVE} !== ${modelName} ? null : ` : '') +
+        `${tpl}, true`;
+    }
+
+    return `${tpl}, {unit: ${tpl}.unit}`;
   },
 
   marks: function(model, selCmpt, marks) {
@@ -190,18 +198,14 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
     });
 
     // Ensure brush reacts to norm signals (i.e., panning/zooming of scales
-    // by another selection). For globally-resolved intervals, the brush should
-    // only react if it is active.
-    const condition = selCmpt.resolve !== 'global' ? '' :
-        `${selCmpt.name + ACTIVE} !== ${stringValue(model.getName(''))} ? ${name} :`;
-
+    // by another selection).
     on.push({
       events: {signal: panNorm},
-      update: `${condition} [${anchor}[0] + ${size} * ${panNorm}, ` +
+      update: `[${anchor}[0] + ${size} * ${panNorm}, ` +
         `${anchor}[1] + ${size} * ${panNorm}]`
     }, {
       events: {signal: zoomNorm},
-      update: `${condition} [${zoomAnchor} + (${name}[0] - ${zoomAnchor}) / ${zoomNorm}.delta, ` +
+      update: `[${zoomAnchor} + (${name}[0] - ${zoomAnchor}) / ${zoomNorm}.delta, ` +
         `${zoomAnchor} + (${name}[1] - ${zoomAnchor}) / ${zoomNorm}.delta]`
     });
 
@@ -220,7 +224,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
     name: dataSg,
     on: hasScales ? [] : [
       { events: {signal: name},
-        update: `span(${name}) === 0 ? ${dataSg} : invert(${scale}, ${name})`}
+        update: `invert(${scale}, ${name})`}
     ]
   });
 }

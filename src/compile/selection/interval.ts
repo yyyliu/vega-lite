@@ -93,13 +93,20 @@ const interval:SelectionCompiler = {
       tpl = name + TUPLE,
       modelName = stringValue(model.getName(''));
 
+    // Only add the tuple to the store if both extents are arrays
+    // without NaNs.
+    const insert = '(' + selCmpt.project.map((p) => {
+      const sg = channelSignalName(selCmpt, p.encoding, 'data');
+      return `isArray(${sg}) && !isNaN(${sg}[0]) && !isNaN(${sg}[1])`;
+    }).join(' && ') + `) ? ${tpl} : null`;
+
     if (selCmpt.resolve === 'global') {
       return (!scales.has(selCmpt) ?
         `${name + ACTIVE} !== ${modelName} ? null : ` : '') +
-        `${tpl}, true`;
+        `${insert}, true`;
     }
 
-    return `${tpl}, {unit: ${tpl}.unit}`;
+    return `${insert}, {unit: ${tpl}.unit}`;
   },
 
   marks: function(model, selCmpt, marks) {

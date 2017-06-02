@@ -15,12 +15,11 @@ const interval:SelectionCompiler = {
   predicate: 'vlInterval',
 
   signals: function(model, selCmpt) {
-    const hasScales = scales.has(selCmpt),
-        signals: any[] = [],
+    const signals: any[] = [],
         intervals:any[] = [],
         name = selCmpt.name;
 
-    if (selCmpt.translate && !hasScales) {
+    if (selCmpt.translate && !(scales.has(selCmpt))) {
       const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
       events(selCmpt, function(_: any[], evt: any) {
         const filters = evt.between[0].filter || (evt.between[0].filter = []);
@@ -43,7 +42,7 @@ const interval:SelectionCompiler = {
       `field: ${stringValue(p.field)}, extent: ${csName}}`);
     });
 
-    if (selCmpt.resolve === 'global' && !hasScales) {
+    if (selCmpt.resolve === 'global' && !scales.has(selCmpt)) {
       signals.push({
         name: name + ACTIVE,
         push: 'outer',

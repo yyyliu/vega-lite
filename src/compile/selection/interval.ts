@@ -57,18 +57,11 @@ const interval:SelectionCompiler = {
   // This simplifies the bookkeeping the compiler has to do -- the signals always
   // exist even if they're never used.
   topLevelSignals: function(model, selCmpt, signals) {
-    const {x, y} = projections(selCmpt);
-    let normName = '';
-    [TRANSLATE_DELTA, ZOOM_ANCHOR].forEach((name) => {
-      if (x !== null) {
-        normName = normSignalName(selCmpt, X, name);
+    selCmpt.project.forEach((projection) => {
+      [TRANSLATE_DELTA, ZOOM_ANCHOR].forEach((name) => {
+        const normName = normSignalName(selCmpt, projection.encoding, name);
         ifNoName(signals, normName, () => signals.push({name: normName}));
-      }
-
-      if (y !== null) {
-        normName = normSignalName(selCmpt, Y, name);
-        ifNoName(signals, normName, () => signals.push({name: normName}));
-      }
+      });
     });
 
     ifNoName(signals, TRANSLATE_ANCHOR, () => {

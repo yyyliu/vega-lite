@@ -21,6 +21,7 @@ import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHead
 import {parseLayoutSize} from './layout/parse';
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
+import {parseLegend} from './legend/parse';
 import {parseMarkDef} from './mark/mark';
 import {RepeaterValue} from './repeat';
 import {assembleScale} from './scale/assemble';
@@ -204,7 +205,9 @@ export abstract class Model {
 
   public abstract parseAxisAndHeader(): void;
 
-  public abstract parseLegend(): void;
+  public parseLegend() {
+    parseLegend(this);
+  }
 
   public abstract assembleSelectionTopLevelSignals(signals: any[]): any[];
   public abstract assembleSelectionSignals(): any[];

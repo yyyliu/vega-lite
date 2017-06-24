@@ -13,7 +13,15 @@ import * as encode from './encode';
 import * as rules from './rules';
 
 
-export function parseUnitLegend(model: UnitModel): LegendComponentIndex {
+export function parseLegend(model: Model) {
+  if (model instanceof UnitModel) {
+    model.component.legends = parseUnitLegend(model);
+  } else {
+    model.component.legends = parseNonUnitLegend(model);
+  }
+}
+
+function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {
     if (model.legend(channel)) {
       legendComponent[channel] = parseLegendForChannel(model, channel);
@@ -91,12 +99,12 @@ function getSpecifiedOrDefaultValue(property: keyof (Legend | VgLegend), specifi
   return specifiedLegend[property];
 }
 
-export function parseNonUnitLegend(model: Model) {
+function parseNonUnitLegend(model: Model) {
   const legendComponent = model.component.legends = {};
   const legendResolveIndex: {[k in NonspatialScaleChannel]?: ResolveMode} = {};
 
   for (const child of model.children) {
-    child.parseLegend();
+    parseLegend(child);
 
     keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
       if (model.resolve[channel].legend === 'shared' &&
@@ -135,6 +143,7 @@ export function parseNonUnitLegend(model: Model) {
       }
     }
   });
+  return legendComponent;
 }
 
 export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend: LegendComponent) {

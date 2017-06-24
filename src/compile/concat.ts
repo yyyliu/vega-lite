@@ -9,7 +9,6 @@ import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {ScaleComponentIndex} from './scale/component';
@@ -69,9 +68,6 @@ export class ConcatModel extends Model {
     return null;
   }
 
-  public parseLegend() {
-    parseNonUnitLegend(this);
-  }
 
   public assembleData(): VgData[] {
      if (!this.parent) {

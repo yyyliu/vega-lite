@@ -12,7 +12,6 @@ import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutLayerSignals} from './layout/assemble';
-import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -86,10 +85,6 @@ export class LayerModel extends Model {
 
   public parseAxisAndHeader() {
     parseLayerAxis(this);
-  }
-
-  public parseLegend() {
-    parseNonUnitLegend(this);
   }
 
   public assembleParentGroupProperties(): VgEncodeEntry {

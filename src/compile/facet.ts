@@ -25,7 +25,6 @@ import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemb
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
 import {labels} from './legend/encode';
-import {parseNonUnitLegend} from './legend/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -194,10 +193,6 @@ export class FacetModel extends ModelWithField {
         // Otherwise do nothing for independent axes
       }
     }
-  }
-
-  public parseLegend() {
-    parseNonUnitLegend(this);
   }
 
   public assembleData(): VgData[] {

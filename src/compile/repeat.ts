@@ -13,7 +13,6 @@ import {isSignalRefDomain, VgData, VgLayout, VgScale, VgSignal} from '../vega.sc
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {unionDomains} from './scale/domain';
@@ -144,10 +143,6 @@ export class RepeatModel extends Model {
     }
 
     // TODO(#2415): support shared axes
-  }
-
-  public parseLegend() {
-    parseNonUnitLegend(this);
   }
 
   public assembleData(): VgData[] {

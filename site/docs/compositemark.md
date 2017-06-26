@@ -5,15 +5,21 @@ title: Composite Mark
 permalink: /docs/compositemark.html
 ---
 
-Composite marks are "macros" for more complex layered graphics with multiple primitive marks. Currently, we include only one composite mark type: `box-plot`
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| `mark`      | String        | The CompositeMark type. Supported composite marks include: "box-plot". |
+Composite marks are "macros" for more complex layered graphics with multiple primitive marks. Currently, we include only one composite mark type: `box-plot`.
 
 ## Box Plot
 
-`box-plot` composite mark represents a [box plot](https://en.wikipedia.org/wiki/Box_plot). The middle tick in the box represents the median. The lower and upper part of the box represents quartile 1 and 3 respectively. The point the lower and upper whiskers extend to depends on the type of `box-plot` specified. To learn more, see the Boxplot Types section.
+
+{: .suppress-error}
+```json
+{
+  ...
+  "mark": "box-plot",
+  ...
+}
+```
+
+`box-plot` composite mark represents a [box plot](https://en.wikipedia.org/wiki/Box_plot). The middle tick in the box represents the median. The lower and upper part of the box represents quartile 1 and 3 respectively. The point that the lower and upper whiskers extend to depends on the type of `box-plot` specified. To learn more, see the [Boxplot Types section](#boxplot-types).
 
 `box-plot` supports the following [encoding channels](encoding.html#channels): `size`, `color`, `opacity`.
 
@@ -60,7 +66,7 @@ You can specify the size of the box in the config using:
 {"config": {"box": {"size": ...}}}
 ```
 
-For futher config customization we must look at what the short 2D `box-plot` example shown in Boxplot with Color and/or Size section is expanded to:
+For further config customization we must look at what the short 2D `box-plot` example shown in Boxplot with Color and/or Size section is expanded to:
 
 <div class="vl-example" data-name="box_plot_minmax_2D_vertical_full"></div>
 
@@ -93,6 +99,7 @@ There are three roles: `box`, `boxWhisker`, `boxMid`. Therefore as you have seen
 In the case an aggregate value of `box-plot` in one of the axes is not specified and an orient property is not specified the default orientation of vertical is used.
 
 ### Boxplot Types
+{:#boxplot-types}
 There are two supported types of boxplots which you specify with the extent property in the mark definition:
 1) `min-max boxplot` which is a boxplot where lower and upper whiskers are defined as the min and max respectively
 {: .suppress-error}

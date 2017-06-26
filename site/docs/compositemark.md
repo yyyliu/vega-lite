@@ -9,6 +9,11 @@ Composite marks are "macros" for more complex layered graphics with multiple pri
 
 ## Box Plot
 
+`box-plot` composite mark represents a [box plot](https://en.wikipedia.org/wiki/Box_plot). The middle tick in the box represents the median. The lower and upper part of the box represents quartile 1 and 3 respectively. The ends of the whiskers can represent several possible alternative values, depending on the [`extent`](#box-plot-types) property.
+<!-- FIXME: why is box plot important? (e.g., showing summary blah blah.) Basically we give novice a sense why Boxplot is important in 1-2 sentences.-->
+<!-- TODO: Ideally we should have an annotated figure for this, but let's not do it for now-->
+
+To create a box plot, you can set `mark` to `"box-plot"`:
 
 {: .suppress-error}
 ```json
@@ -19,7 +24,10 @@ Composite marks are "macros" for more complex layered graphics with multiple pri
 }
 ```
 
-`box-plot` composite mark represents a [box plot](https://en.wikipedia.org/wiki/Box_plot). The middle tick in the box represents the median. The lower and upper part of the box represents quartile 1 and 3 respectively. The point that the lower and upper whiskers extend to depends on the type of `box-plot` specified. To learn more, see the [Boxplot Types section](#boxplot-types).
+Alternatively, you can use box plot's mark definition object, which supports the following properties:
+
+{% include table.html props="type,extent,orient" source="BoxPlotDef" %}
+<!-- FIXME update BoxPlotDef interface to have description for extent-->
 
 **Note**: `aggregate` of the continuous field is implicitly `box-plot`.
 

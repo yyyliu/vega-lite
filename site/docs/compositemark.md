@@ -23,7 +23,7 @@ Composite marks are "macros" for more complex layered graphics with multiple pri
 
 **Note**: `aggregate` of the continuous field is implicitly `box-plot`.
 
-### Basic Examples
+### Basic Usage
 
 #### 1D Box Plots
 

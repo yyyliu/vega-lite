@@ -43,7 +43,7 @@ You can create vertical and horizontal 2D box plots. The orientation is determin
 
 If the continuous field is on the x axis then the boxplot will be horizontal.
 
-<div class="vl-example" data-name="box_plot_minmax_2D_horizontal_short"></div
+<div class="vl-example" data-name="box_plot_minmax_2D_horizontal_short"></div>
 
 If the continuous field is on the y axis then the boxplot will be vertical.
 

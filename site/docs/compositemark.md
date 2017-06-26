@@ -35,8 +35,6 @@ You can also create horizontal 1D boxplot by encoding a continuous field on the 
 
 <div class="vl-example" data-name="box_plot_minmax_1D_horizontal_short"></div>
 
-Encoding a discrete field on the x axis for horizontal box plots and y axis for vertical box plots does not make sense and therefore will not work.
-
 #### 2D Box Plots
 
 You can create vertical and horizontal 2D box plots. The orientation is determined by the continuous axis.
@@ -48,8 +46,6 @@ If the continuous field is on the x axis then the boxplot will be horizontal.
 If the continuous field is on the y axis then the boxplot will be vertical.
 
 <div class="vl-example" data-name="box_plot_minmax_2D_vertical_short"></div>
-
-Since the continuous field is used for orientation, discrete x discrete and continuous x continuous do not make sense and therefore will not work.
 
 ### Customizing Box Plots
 
@@ -75,21 +71,6 @@ To customize different parts of the box, we can use roles config to customize di
 ```
 
 <!-- TODO: add an example to customize whisker color?-->
-
-**Note**: `box` can specify `size` in addition to `color` and `opacity` which `boxWhisker` and `boxMid` can specify.
-
-### Boxplot Orientation
-`box-plot` orientation is determined by the continuous field axis. If the continuous field is on the x axis then the `box-plot` has a horizontal orientation. If the continuous field is on the y axis then the `box-plot` has a vertical orientation. In the case where both the x and y axis have continuous fields, the axis with a specified aggregate property of `box-plot` determines the orientation. So, if the x axis has an aggregate value of `box-plot` the `box-plot` has a horizontal orientation and if the y axis has an aggregate value of `box-plot` the `box-plot` has a vertical orientation. If no aggregate value for either of the axes is specified, an orient property must be specified in the mark object. For example the following `mark` example specifies a vertical `box-plot`.
-
-{: .suppress-error}
-```json
-"mark": {
-  "type": "box-plot",
-  "orient": "vertical"
-}
-```
-
-In the case an aggregate value of `box-plot` in one of the axes is not specified and an orient property is not specified the default orientation of vertical is used.
 
 ### Boxplot Types
 {:#boxplot-types}

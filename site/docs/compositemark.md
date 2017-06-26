@@ -21,8 +21,6 @@ Composite marks are "macros" for more complex layered graphics with multiple pri
 
 `box-plot` composite mark represents a [box plot](https://en.wikipedia.org/wiki/Box_plot). The middle tick in the box represents the median. The lower and upper part of the box represents quartile 1 and 3 respectively. The point that the lower and upper whiskers extend to depends on the type of `box-plot` specified. To learn more, see the [Boxplot Types section](#boxplot-types).
 
-`box-plot` supports the following [encoding channels](encoding.html#channels): `size`, `color`, `opacity`.
-
 **Note**: `aggregate` of the continuous field is implicitly `box-plot`.
 
 ### Basic Examples

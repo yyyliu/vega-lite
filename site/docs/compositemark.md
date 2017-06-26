@@ -59,9 +59,11 @@ If the continuous field is on the y axis then the boxplot will be vertical.
 
 #### Color and Size Encoding Channels
 
-You can customize the color and size of the box in the `box-plot` by using the `color` and `size` [encoding channels](encoding.html#channels).
+You can customize the color and size of the box in the `box-plot` by using the `color` and `size` [encoding channels](encoding.html#channels).  <!-- FIXME: missing opacity-->
 
 <div class="vl-example" data-name="box_plot_minmax_2D_vertical_short"></div>
+
+<!-- FIXME: Let's remove color and size for all basic examples to simplify things and add one special example for this case -->
 
 #### Role Config
 

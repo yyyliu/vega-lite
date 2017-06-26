@@ -25,9 +25,9 @@ Composite marks are "macros" for more complex layered graphics with multiple pri
 
 **Note**: `aggregate` of the continuous field is implicitly `box-plot`.
 
-### 1D Boxplots
+### 1D Box Plots
 
-You can create horizontal 1D boxplots by encoding a continuous field on the y axis.
+You can create horizontal 1D box plots by encoding a continuous field on the y axis.
 
 <div class="vl-example" data-name="box_plot_minmax_1D_vertical_short"></div>
 
@@ -35,11 +35,11 @@ You can also create horizontal 1D boxplot by encoding a continuous field on the 
 
 <div class="vl-example" data-name="box_plot_minmax_1D_horizontal_short"></div>
 
-Encoding a discrete field on the x axis for horizontal boxplots and y axis for vertical boxplots does not make sense and therefore will not work.
+Encoding a discrete field on the x axis for horizontal box plots and y axis for vertical box plots does not make sense and therefore will not work.
 
-### 2D Boxplots
+### 2D Box Plots
 
-You can create vertical and horizontal 2D boxplots. The orientation is determined by the continuous axis.
+You can create vertical and horizontal 2D box plots. The orientation is determined by the continuous axis.
 
 If the continuous field is on the x axis then the boxplot will be horizontal.
 
@@ -100,7 +100,7 @@ In the case an aggregate value of `box-plot` in one of the axes is not specified
 
 ### Boxplot Types
 {:#boxplot-types}
-There are two supported types of boxplots which you specify with the extent property in the mark definition:
+There are two supported types of box plots which you specify with the extent property in the mark definition:
 1) `min-max boxplot` which is a boxplot where lower and upper whiskers are defined as the min and max respectively
 {: .suppress-error}
 ```json

@@ -25,7 +25,9 @@ Composite marks are "macros" for more complex layered graphics with multiple pri
 
 **Note**: `aggregate` of the continuous field is implicitly `box-plot`.
 
-### 1D Box Plots
+### Basic Examples
+
+#### 1D Box Plots
 
 You can create horizontal 1D box plots by encoding a continuous field on the y axis.
 
@@ -37,7 +39,7 @@ You can also create horizontal 1D boxplot by encoding a continuous field on the 
 
 Encoding a discrete field on the x axis for horizontal box plots and y axis for vertical box plots does not make sense and therefore will not work.
 
-### 2D Box Plots
+#### 2D Box Plots
 
 You can create vertical and horizontal 2D box plots. The orientation is determined by the continuous axis.
 
@@ -51,26 +53,17 @@ If the continuous field is on the y axis then the boxplot will be vertical.
 
 Since the continuous field is used for orientation, discrete x discrete and continuous x continuous do not make sense and therefore will not work.
 
-### Boxplot with Color and/or Size
+### Customizing Box Plots
+
+#### Color and Size Encoding Channels
 
 You can customize the color and size of the box in the `box-plot` by using the `color` and `size` [encoding channels](encoding.html#channels).
 
 <div class="vl-example" data-name="box_plot_minmax_2D_vertical_short"></div>
 
-### Boxplot Config
+#### Role Config
 
-You can specify the size of the box in the config using:
-
-{: .suppress-error}
-```json
-{"config": {"box": {"size": ...}}}
-```
-
-For further config customization we must look at what the short 2D `box-plot` example shown in Boxplot with Color and/or Size section is expanded to:
-
-<div class="vl-example" data-name="box_plot_minmax_2D_vertical_full"></div>
-
-There are three roles: `box`, `boxWhisker`, `boxMid`. Therefore as you have seen from specifying the size of the box you can specify [mark](mark.html) properties in config.
+To customize different parts of the box, we can use roles config to customize different parts of the box plot (`box`, `boxWhisker`, `boxMid`).
 
 {: .suppress-error}
 ```json
@@ -82,6 +75,8 @@ There are three roles: `box`, `boxWhisker`, `boxMid`. Therefore as you have seen
   }
 }
 ```
+
+<!-- TODO: add an example to customize whisker color?-->
 
 **Note**: `box` can specify `size` in addition to `color` and `opacity` which `boxWhisker` and `boxMid` can specify.
 

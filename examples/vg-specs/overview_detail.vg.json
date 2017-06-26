@@ -454,7 +454,6 @@
             ],
             "axes": [
                 {
-                    "format": "%Y",
                     "scale": "concat_0_x",
                     "labelOverlap": true,
                     "orient": "bottom",
@@ -472,7 +471,6 @@
                     }
                 },
                 {
-                    "format": "%Y",
                     "scale": "concat_0_x",
                     "domain": false,
                     "grid": true,

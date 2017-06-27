@@ -29,8 +29,6 @@ Alternatively, you can use box plot's mark definition object, which supports the
 {% include table.html props="type,extent,orient" source="BoxPlotDef" %}
 <!-- FIXME update BoxPlotDef interface to have description for extent-->
 
-**Note**: `aggregate` of the continuous field is implicitly `box-plot`.
-
 ### Basic Usage
 {:#box-plot-types}
 
@@ -101,3 +99,10 @@ To customize different parts of the box, we can use roles config to customize di
 ```
 
 <!-- TODO: add an example to customize whisker color?-->
+
+### `aggregate` Property for Box Plots
+
+Note that `aggregate` property of the continuous field is implicitly `box-plot`.
+For example, a basic 1D boxplot shown above is equivalent to:
+
+<!-- TODO: add example with explicit "aggregate" -->

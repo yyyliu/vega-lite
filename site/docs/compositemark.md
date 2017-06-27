@@ -84,8 +84,9 @@ To customize different parts of the box, we can use roles config to customize di
 
 ### Boxplot Types
 {:#boxplot-types}
-There are two supported types of box plots which you specify with the extent property in the mark definition:
-1) `min-max boxplot` which is a boxplot where lower and upper whiskers are defined as the min and max respectively
+There are two supported types of box plots which you specify with the `extent` property in the mark definition:
+
+1) `min-max` Box Plot, which is a boxplot where lower and upper whiskers are defined as the min and max respectively
 {: .suppress-error}
 ```json
 "mark": {
@@ -93,7 +94,8 @@ There are two supported types of box plots which you specify with the extent pro
   "extent": "min-max"
 }
 ```
-2) `k * IQR boxplot` which is a boxplot where the lower whisker is defined as the first quartile minus k * IQR (q1 - k * IQR) and the upper whisker is defined as the third quartile plus k * IQR (q3 + k * IQR). In this type of boxplot you are able to specify the constant or scalar k which is typically 1.5. IQR is the interquartile range which is quartile 3 minus quartile 1.
+2) Tukey Box Plot, which is a boxplot where the whisker spans from _Q1 - k * IQR_ to _Q3 + k * IQR_ where _Q1_ and _Q3_ are quartiles 1 and 3 while _IQR_ is the interquartile range (_Q3-Q1_). In this type of boxplot, you can specify the constant  `k` which is typically `1.5`.
+
 ```json
 "mark": {
   "type": "box-plot",

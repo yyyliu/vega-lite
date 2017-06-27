@@ -999,10 +999,12 @@
           ]
         },
         "orient": {
-          "$ref": "#/definitions/Orient"
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the box plot.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
         },
         "type": {
-          "$ref": "#/definitions/BOXPLOT"
+          "$ref": "#/definitions/BOXPLOT",
+          "description": "Type of the mark.  For box plots, this should always be `\"box-plot\"`."
         }
       },
       "required": [

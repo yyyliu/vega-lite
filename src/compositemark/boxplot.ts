@@ -18,8 +18,21 @@ export type BoxPlotRole = 'boxWhisker' | 'box' | 'boxMid';
 
 
 export interface BoxPlotDef {
+  /**
+   * Type of the mark.  For box plots, this should always be `"box-plot"`.
+   */
   type: BOXPLOT;
+
+  // TODO: Mattwchun -- you can try to add a markdown link to the boxplot's rule section
+  /**
+   * Orientation of the box plot.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
+   */
   orient?: Orient;
+
+  /**
+   * FIXME:
+   * __Default value:__ `"min-max"`.
+   */
   extent?: 'min-max' | number;
 }
 

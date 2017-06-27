@@ -32,7 +32,7 @@ Alternatively, you can use box plot's mark definition object, which supports the
 **Note**: `aggregate` of the continuous field is implicitly `box-plot`.
 
 ### Basic Usage
-{:#box plot-types}
+{:#box-plot-types}
 
 Vega-Lite supports two types of box plots, defined by the `extent` property in the mark definition object.
 
@@ -69,7 +69,7 @@ You can create horizontal 1D box plots by encoding a continuous field on the y a
 
 <div class="vl-example" data-name="box_plot_minmax_1D_vertical_short"></div>
 
-You can also create horizontal 1D boxplot by encoding a continuous field on the x axis.
+You can also create horizontal 1D box plot by encoding a continuous field on the x axis.
 
 <div class="vl-example" data-name="box_plot_minmax_1D_horizontal_short"></div>
 
@@ -77,11 +77,11 @@ You can also create horizontal 1D boxplot by encoding a continuous field on the 
 
 You can create vertical and horizontal 2D box plots. The orientation is determined by the continuous axis.
 
-If the continuous field is on the x axis then the boxplot will be horizontal.
+If the continuous field is on the x axis then the box plot will be horizontal.
 
 <div class="vl-example" data-name="box_plot_minmax_2D_horizontal_short"></div>
 
-If the continuous field is on the y axis then the boxplot will be vertical.
+If the continuous field is on the y axis then the box plot will be vertical.
 
 <div class="vl-example" data-name="box_plot_minmax_2D_vertical_short"></div>
 

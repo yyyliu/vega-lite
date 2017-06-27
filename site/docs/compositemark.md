@@ -32,6 +32,36 @@ Alternatively, you can use box plot's mark definition object, which supports the
 **Note**: `aggregate` of the continuous field is implicitly `box-plot`.
 
 ### Basic Usage
+{:#box plot-types}
+
+Vega-Lite supports two types of box plots, defined by the `extent` property in the mark definition object.
+
+1) `min-max` Box Plot, which is a box plot where lower and upper whiskers are defined as the min and max respectively.  If `extent` is not specified, this type of box plot will be used.
+
+{: .suppress-error}
+```json
+"mark": {
+  "type": "box-plot",
+  "extent": "min-max"
+}
+```
+
+<!-- TODO add real example? -->
+
+2) Tukey Box Plot, which is a box plot where the whisker spans from _Q1 - k * IQR_ to _Q3 + k * IQR_ where _Q1_ and _Q3_ are quartiles 1 and 3 while _IQR_ is the interquartile range (_Q3-Q1_). In this type of box plot, you can specify the constant  `k` which is typically `1.5`.
+
+```json
+"mark": {
+  "type": "box-plot",
+  "extent": 1.5
+}
+```
+
+<!-- TODO add real example? -->
+
+### Box Plot's Orientation
+
+Box plot's orientation is automatically determined by the continuous field axis.
 
 #### 1D Box Plots
 
@@ -81,26 +111,3 @@ To customize different parts of the box, we can use roles config to customize di
 ```
 
 <!-- TODO: add an example to customize whisker color?-->
-
-### Boxplot Types
-{:#boxplot-types}
-There are two supported types of box plots which you specify with the `extent` property in the mark definition:
-
-1) `min-max` Box Plot, which is a boxplot where lower and upper whiskers are defined as the min and max respectively
-{: .suppress-error}
-```json
-"mark": {
-  "type": "box-plot",
-  "extent": "min-max"
-}
-```
-2) Tukey Box Plot, which is a boxplot where the whisker spans from _Q1 - k * IQR_ to _Q3 + k * IQR_ where _Q1_ and _Q3_ are quartiles 1 and 3 while _IQR_ is the interquartile range (_Q3-Q1_). In this type of boxplot, you can specify the constant  `k` which is typically `1.5`.
-
-```json
-"mark": {
-  "type": "box-plot",
-  "extent": 1.5
-}
-```
-
-If the extent is not specified then the default `box-plot` type of `min-max` is used.

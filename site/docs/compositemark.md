@@ -36,7 +36,7 @@ Alternatively, you can use box plot's mark definition object, which supports the
 
 Vega-Lite supports two types of box plots, defined by the `extent` property in the mark definition object.
 
-1) `min-max` Box Plot, which is a box plot where lower and upper whiskers are defined as the min and max respectively.  If `extent` is not specified, this type of box plot will be used.
+1) __`min-max` Box Plot__, which is a box plot where lower and upper whiskers are defined as the min and max respectively.  If `extent` is not specified, this type of box plot will be used.
 
 {: .suppress-error}
 ```json
@@ -46,9 +46,9 @@ Vega-Lite supports two types of box plots, defined by the `extent` property in t
 }
 ```
 
-<!-- TODO add real example? -->
+<!-- TODO add real horizontal example? -->
 
-2) Tukey Box Plot, which is a box plot where the whisker spans from _Q1 - k * IQR_ to _Q3 + k * IQR_ where _Q1_ and _Q3_ are quartiles 1 and 3 while _IQR_ is the interquartile range (_Q3-Q1_). In this type of box plot, you can specify the constant  `k` which is typically `1.5`.
+2) __Tukey Box Plot__, which is a box plot where the whisker spans from _Q1 - k * IQR_ to _Q3 + k * IQR_ where _Q1_ and _Q3_ are quartiles 1 and 3 while _IQR_ is the interquartile range (_Q3-Q1_). In this type of box plot, you can specify the constant  `k` which is typically `1.5`.
 
 ```json
 "mark": {
@@ -57,31 +57,21 @@ Vega-Lite supports two types of box plots, defined by the `extent` property in t
 }
 ```
 
-<!-- TODO add real example? -->
+<!-- TODO add real horizontal example? -- Important to pick an example that this IQR will be clearly different from the min-max above -->
 
-### Box Plot's Orientation
+### Orientation
 
 Box plot's orientation is automatically determined by the continuous field axis.
-
-#### 1D Box Plots
-
-You can create horizontal 1D box plots by encoding a continuous field on the y axis.
+For example, you can create a vertical 1D box plot by encoding a continuous field on the y axis.
 
 <div class="vl-example" data-name="box_plot_minmax_1D_vertical_short"></div>
 
-You can also create horizontal 1D box plot by encoding a continuous field on the x axis.
-
-<div class="vl-example" data-name="box_plot_minmax_1D_horizontal_short"></div>
-
-#### 2D Box Plots
-
-You can create vertical and horizontal 2D box plots. The orientation is determined by the continuous axis.
-
-If the continuous field is on the x axis then the box plot will be horizontal.
+For 2D box plots with one continuous and one discrete fields,
+the box plot will be horizontal if the continuous field is on the x axis.
 
 <div class="vl-example" data-name="box_plot_minmax_2D_horizontal_short"></div>
 
-If the continuous field is on the y axis then the box plot will be vertical.
+Similarly, if the continuous field is on the y axis, the box plot will be vertical.
 
 <div class="vl-example" data-name="box_plot_minmax_2D_vertical_short"></div>
 

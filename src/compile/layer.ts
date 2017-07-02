@@ -17,7 +17,6 @@ import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
-import {unionDomains} from './scale/domain';
 import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
 

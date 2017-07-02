@@ -18,7 +18,6 @@ import {parseRepeatLayoutSize} from './layout/parse';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
-import {unionDomains} from './scale/domain';
 
 
 export type RepeaterValue = {

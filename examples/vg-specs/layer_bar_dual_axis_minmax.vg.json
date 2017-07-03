@@ -237,6 +237,12 @@
         {
             "name": "x",
             "type": "band",
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05,
             "domain": {
                 "fields": [
                     {
@@ -253,32 +259,33 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": {
-                "step": 21
-            },
-            "round": true,
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
+            }
         },
         {
             "name": "layer_0_y",
             "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "mean_precipitation"
-            },
             "range": [
                 200,
                 0
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_0",
+                "field": "mean_precipitation"
+            }
         },
         {
             "name": "layer_1_y",
             "type": "linear",
+            "range": [
+                200,
+                0
+            ],
+            "zero": false,
+            "round": true,
+            "nice": true,
             "domain": {
                 "fields": [
                     {
@@ -291,14 +298,7 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": [
-                200,
-                0
-            ],
-            "zero": false,
-            "round": true,
-            "nice": true
+            }
         }
     ],
     "axes": [

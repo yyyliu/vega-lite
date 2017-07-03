@@ -380,6 +380,12 @@
         {
             "name": "x",
             "type": "time",
+            "range": [
+                0,
+                500
+            ],
+            "round": true,
+            "nice": "year",
             "domain": {
                 "fields": [
                     {
@@ -400,27 +406,28 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": [
-                0,
-                500
-            ],
-            "round": true,
-            "nice": "year"
+            }
         },
         {
             "name": "color",
             "type": "ordinal",
+            "range": "category",
             "domain": {
                 "data": "data_3",
                 "field": "event",
                 "sort": true
-            },
-            "range": "category"
+            }
         },
         {
             "name": "y",
             "type": "linear",
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true,
             "domain": {
                 "fields": [
                     {
@@ -433,14 +440,7 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": [
-                200,
-                0
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true
+            }
         }
     ],
     "axes": [

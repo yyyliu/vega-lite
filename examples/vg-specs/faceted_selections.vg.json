@@ -763,10 +763,6 @@
         {
             "name": "x",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "X"
-            },
             "domainRaw": {
                 "signal": "grid_X"
             },
@@ -776,15 +772,15 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "source_0",
+                "field": "X"
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Y"
-            },
             "domainRaw": {
                 "signal": "grid_Y"
             },
@@ -794,7 +790,11 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "source_0",
+                "field": "Y"
+            }
         }
     ]
 }

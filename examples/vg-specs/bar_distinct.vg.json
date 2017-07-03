@@ -82,32 +82,32 @@
         {
             "name": "x",
             "type": "band",
-            "domain": {
-                "data": "source_0",
-                "field": "Origin",
-                "sort": true
-            },
             "range": {
                 "step": 21
             },
             "round": true,
             "paddingInner": 0.1,
-            "paddingOuter": 0.05
+            "paddingOuter": 0.05,
+            "domain": {
+                "data": "source_0",
+                "field": "Origin",
+                "sort": true
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "distinct_Name"
-            },
             "range": [
                 200,
                 0
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "source_0",
+                "field": "distinct_Name"
+            }
         }
     ],
     "axes": [

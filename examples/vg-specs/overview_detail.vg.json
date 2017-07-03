@@ -424,30 +424,30 @@
                 {
                     "name": "concat_0_x",
                     "type": "time",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "date"
-                    },
                     "range": [
                         0,
                         480
                     ],
-                    "round": true
+                    "round": true,
+                    "domain": {
+                        "data": "data_0",
+                        "field": "date"
+                    }
                 },
                 {
                     "name": "concat_0_y",
                     "type": "linear",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "price"
-                    },
                     "range": [
                         60,
                         0
                     ],
                     "round": true,
                     "nice": true,
-                    "zero": true
+                    "zero": true,
+                    "domain": {
+                        "data": "data_0",
+                        "field": "price"
+                    }
                 }
             ],
             "axes": [
@@ -540,10 +540,6 @@
                 {
                     "name": "concat_1_x",
                     "type": "time",
-                    "domain": {
-                        "data": "data_1",
-                        "field": "date"
-                    },
                     "domainRaw": {
                         "signal": "vlIntervalDomain(\"brush_store\", \"x\", null, \"union\", \"all\")"
                     },
@@ -551,22 +547,26 @@
                         0,
                         480
                     ],
-                    "round": true
+                    "round": true,
+                    "domain": {
+                        "data": "data_1",
+                        "field": "date"
+                    }
                 },
                 {
                     "name": "concat_1_y",
                     "type": "linear",
-                    "domain": {
-                        "data": "data_1",
-                        "field": "price"
-                    },
                     "range": [
                         200,
                         0
                     ],
                     "round": true,
                     "nice": true,
-                    "zero": true
+                    "zero": true,
+                    "domain": {
+                        "data": "data_1",
+                        "field": "price"
+                    }
                 }
             ],
             "axes": [

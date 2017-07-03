@@ -481,32 +481,32 @@
                 {
                     "name": "concat_0_x",
                     "type": "linear",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "Miles_per_Gallon"
-                    },
                     "range": [
                         0,
                         200
                     ],
                     "round": true,
                     "nice": true,
-                    "zero": true
+                    "zero": true,
+                    "domain": {
+                        "data": "data_0",
+                        "field": "Miles_per_Gallon"
+                    }
                 },
                 {
                     "name": "concat_0_y",
                     "type": "linear",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "Horsepower"
-                    },
                     "range": [
                         200,
                         0
                     ],
                     "round": true,
                     "nice": true,
-                    "zero": true
+                    "zero": true,
+                    "domain": {
+                        "data": "data_0",
+                        "field": "Horsepower"
+                    }
                 }
             ],
             "axes": [
@@ -730,10 +730,6 @@
                 {
                     "name": "concat_1_x",
                     "type": "linear",
-                    "domain": {
-                        "data": "data_1",
-                        "field": "Displacement"
-                    },
                     "domainRaw": {
                         "signal": "grid_Displacement"
                     },
@@ -743,15 +739,15 @@
                     ],
                     "round": true,
                     "nice": true,
-                    "zero": true
+                    "zero": true,
+                    "domain": {
+                        "data": "data_1",
+                        "field": "Displacement"
+                    }
                 },
                 {
                     "name": "concat_1_y",
                     "type": "linear",
-                    "domain": {
-                        "data": "data_1",
-                        "field": "Acceleration"
-                    },
                     "domainRaw": {
                         "signal": "grid_Acceleration"
                     },
@@ -761,7 +757,11 @@
                     ],
                     "round": true,
                     "nice": true,
-                    "zero": true
+                    "zero": true,
+                    "domain": {
+                        "data": "data_1",
+                        "field": "Acceleration"
+                    }
                 }
             ],
             "axes": [

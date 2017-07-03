@@ -120,31 +120,31 @@
         {
             "name": "x",
             "type": "point",
-            "domain": {
-                "data": "data_0",
-                "field": "a",
-                "sort": true
-            },
             "range": {
                 "step": 21
             },
             "round": true,
-            "padding": 0.5
+            "padding": 0.5,
+            "domain": {
+                "data": "data_0",
+                "field": "a",
+                "sort": true
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "average_b"
-            },
             "range": [
                 200,
                 0
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": {
+                "data": "data_0",
+                "field": "average_b"
+            }
         }
     ],
     "axes": [

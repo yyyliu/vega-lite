@@ -145,30 +145,37 @@
         {
             "name": "x",
             "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "miles"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "miles"
-                    }
-                ],
-                "sort": true
-            },
             "range": [
                 0,
                 200
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "miles"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "miles"
+                    }
+                ],
+                "sort": true
+            }
         },
         {
             "name": "y",
             "type": "linear",
+            "range": [
+                200,
+                0
+            ],
+            "zero": false,
+            "round": true,
+            "nice": true,
             "domain": {
                 "fields": [
                     {
@@ -181,14 +188,7 @@
                     }
                 ],
                 "sort": true
-            },
-            "range": [
-                200,
-                0
-            ],
-            "zero": false,
-            "round": true,
-            "nice": true
+            }
         }
     ],
     "axes": [

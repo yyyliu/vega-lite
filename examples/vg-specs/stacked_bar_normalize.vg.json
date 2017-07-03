@@ -116,45 +116,45 @@
         {
             "name": "x",
             "type": "band",
-            "domain": {
-                "data": "source_0",
-                "field": "age",
-                "sort": true
-            },
             "range": {
                 "step": 17
             },
             "round": true,
             "paddingInner": 0.1,
-            "paddingOuter": 0.05
+            "paddingOuter": 0.05,
+            "domain": {
+                "data": "source_0",
+                "field": "age",
+                "sort": true
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": [
-                0,
-                1
-            ],
             "range": [
                 200,
                 0
             ],
             "round": true,
             "nice": true,
-            "zero": true
+            "zero": true,
+            "domain": [
+                0,
+                1
+            ]
         },
         {
             "name": "color",
             "type": "ordinal",
+            "range": [
+                "#EA98D2",
+                "#659CCA"
+            ],
             "domain": {
                 "data": "source_0",
                 "field": "gender",
                 "sort": true
-            },
-            "range": [
-                "#EA98D2",
-                "#659CCA"
-            ]
+            }
         }
     ],
     "axes": [

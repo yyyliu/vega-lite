@@ -28,13 +28,13 @@ export function labels(model: UnitModel, channel: SpatialScaleChannel, specified
       signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat, isUTCScale)
     };
   } else if ((fieldDef.type === NOMINAL || fieldDef.type === ORDINAL) && axis.format) {
-    if (fieldDef['formatType'] === 'number') {
+    if (axis.formatType === 'number') {
       labelsSpec.text = {
         signal: `format(${fieldDef.field}, '${numberFormat(fieldDef, axis.format, config)}')`
       };
-    } else if (fieldDef['formatType']) {
+    } else if (axis.formatType) {
       labelsSpec.text = {
-        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.legend.shortTimeLabels, config.timeFormat, fieldDef['formatType'] === 'utc')
+        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.legend.shortTimeLabels, config.timeFormat, axis.formatType === 'utc')
       };
     }
   }

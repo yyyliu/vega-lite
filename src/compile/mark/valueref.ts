@@ -149,7 +149,7 @@ export function text(textDef: Conditional<TextFieldDef<string>, ValueDef<any>>, 
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {
-      return formatSignalRef(textDef, textDef.format, 'datum', config, textDef.formatType || 'number', 'text');
+      return formatSignalRef(textDef, textDef.format, 'datum', config, textDef.formatType);
     } else if (isValueDef(textDef)) {
       return {value: textDef.value};
     }

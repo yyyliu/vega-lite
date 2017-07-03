@@ -78,24 +78,18 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
 
   if (fieldDef.type === TEMPORAL) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
-    labelsSpec = extend({
-      text: {
-        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)
-      }
-    }, labelsSpec || {});
+    labelsSpec.text = {
+      signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)
+    };
   } else if ((fieldDef.type === NOMINAL || fieldDef.type === ORDINAL) && legend.format) {
-    if (fieldDef['formatType'] === 'number') {
-      labelsSpec = extend({
-        text: {
-          signal: `format(${fieldDef.field}, '${numberFormat(fieldDef, legend.format, config)}')`
-        }
-      }, labelsSpec || {});
-    } else if (fieldDef['formatType']) {
-      labelsSpec = extend({
-        text: {
-          signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, fieldDef['formatType'] === 'utc')
-        }
-      }, labelsSpec || {});
+    if (legend.formatType === 'number') {
+      labelsSpec.text = {
+        signal: `format(${fieldDef.field}, '${numberFormat(fieldDef, legend.format, config)}')`
+      };
+    } else if (legend.formatType) {
+      labelsSpec.text = {
+        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, legend.formatType === 'utc')
+      };
     }
   }
 

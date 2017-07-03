@@ -1,5 +1,6 @@
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
+import {FormatType} from './type';
 import {VgLegend, VgLegendBase, VgLegendConfig, VgLegendEncode} from './vega.schema';
 
 
@@ -38,7 +39,7 @@ export interface Legend extends VgLegendBase, Guide {
    */
   zindex?: number;
 
-  formatType?: 'number' | 'time' | 'utc';
+  formatType?: FormatType;
 }
 
 export type LegendEncoding = {

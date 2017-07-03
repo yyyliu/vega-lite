@@ -7,7 +7,7 @@ import {ScaleType} from '../scale';
 import {isConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, LayoutSize, Spec} from '../spec';
 import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';
-import {ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {FormatType, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {duplicate, isArray} from '../util';
 import {VgEncodeEntry, VgSort} from '../vega.schema';
 import {ConcatModel} from './concat';
@@ -86,33 +86,54 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
   return config.mark[prop];
 }
 
-export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, formatType: 'number' | 'time' | 'utc', channel: Channel, useBinRange?: boolean) {
-  if (channel === TEXT || channel === ROW || channel === COLUMN || channel === TOOLTIP) {
-    if (specifiedFormat) {
-      if (formatType === 'number') {
-        if (fieldDef.type === 'quantitative') {
-          const format = numberFormat(fieldDef, specifiedFormat, config);
-          if (fieldDef.bin) {
-            if (useBinRange) {
-              // For bin range, no need to apply format as the formula that creates range already include format
-              return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
-            } else {
-              return {
-                signal: `format(${field(fieldDef, {expr, binSuffix: 'start'})}, '${format}')+'-'+format(${field(fieldDef, {expr, binSuffix: 'end'})}, '${format}')`
-              };
-            }
-          } else {
-            return {
-              signal: `format(${field(fieldDef, {expr})}, '${format}')`
-            };
-          }
-        }
+export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, formatType: FormatType | undefined, useBinRange?: boolean) {
+  // if (channel === TEXT || channel === ROW || channel === COLUMN || channel === TOOLTIP) {
+  //   if (specifiedFormat) {
+  //     if (formatType === 'number') {
+  //       if (fieldDef.type === 'quantitative') {
+  //         const format = numberFormat(fieldDef, specifiedFormat, config);
+  //         if (fieldDef.bin) {
+  //           if (useBinRange) {
+  //             // For bin range, no need to apply format as the formula that creates range already include format
+  //             return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
+  //           } else {
+  //             return {
+  //               signal: `format(${field(fieldDef, {expr, binSuffix: 'start'})}, '${format}')+'-'+format(${field(fieldDef, {expr, binSuffix: 'end'})}, '${format}')`
+  //             };
+  //           }
+  //         } else {
+  //           return {
+  //             signal: `format(${field(fieldDef, {expr})}, '${format}')`
+  //           };
+  //         }
+  //       }
+  //     } else {
+  //       return {
+  //         signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, formatType === 'utc')
+  //       };
+  //     }
+  //   }
+  // }
+  if (formatType === 'number') {
+    const format = numberFormat(fieldDef, specifiedFormat, config);
+    if (fieldDef.bin) {
+      if (useBinRange) {
+        // For bin range, no need to apply format as the formula that creates range already include format
+        return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
       } else {
         return {
-          signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, formatType === 'utc')
+          signal: `${formatExpr(field(fieldDef, {expr, binSuffix: 'start'}), format)} + '-' + ${formatExpr(field(fieldDef, {expr, binSuffix: 'end'}), format)}`
         };
       }
+    } else {
+      return {
+        signal: `${formatExpr(field(fieldDef, {expr}), format)}`
+      };
     }
+  } else if (formatType) {
+    return {
+      signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, formatType === 'utc')
+    };
   }
   if (fieldDef.type === 'quantitative') {
     const format = numberFormat(fieldDef, specifiedFormat, config);
@@ -145,18 +166,13 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
  * @param format explicitly specified format
  */
 export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config) {
-  if (fieldDef.type === QUANTITATIVE || fieldDef.type === ORDINAL) {
-    // add number format for quantitative type only
-
-    // Specified format in axis/legend has higher precedence than fieldDef.format
-    if (specifiedFormat) {
-      return specifiedFormat;
-    }
-
-    // TODO: need to make this work correctly for numeric ordinal / nominal type
-    return config.numberFormat;
+  // Specified format in axis/legend has higher precedence than fieldDef.format
+  if (specifiedFormat) {
+    return specifiedFormat;
   }
-  return undefined;
+
+  // TODO: need to make this work correctly for numeric ordinal / nominal type
+  return config.numberFormat;
 }
 
 function formatExpr(field: string, format: string) {

@@ -14,7 +14,7 @@ import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
-import {getFullName, Type} from './type';
+import {FormatType, getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
 
 
@@ -174,7 +174,7 @@ export interface TextFieldDef<F> extends FieldDef<F> {
    */
   format?: string;
 
-  formatType?: 'number' | 'time' | 'utc';
+  formatType?: FormatType;
 }
 
 export type ChannelDef<F> = Conditional<FieldDef<F>, ValueDef<any>>;

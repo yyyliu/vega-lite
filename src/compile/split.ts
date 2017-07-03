@@ -7,7 +7,7 @@ import {duplicate} from '../util';
 /**
  * Generic classs for storing properties that are explicitly specified and implicitly determined by the compiler.
  */
-export class Split<T extends Object> {
+export class Split<T extends object> {
   constructor(public readonly explicit: T = {} as T, public readonly implicit: T = {} as T) {}
 
   public clone() {
@@ -59,7 +59,7 @@ export class Split<T extends Object> {
     return this;
   }
 
-  public copyKeyFromSplit<S, K extends keyof (T|S)>(key: K, s: Split<S>) {
+  public copyKeyFromSplit<S extends object, K extends keyof (T|S)>(key: K, s: Split<S>) {
     // Explicit has higher precedence
     if (s.explicit[key] !== undefined) {
       this.set(key, s.explicit[key], true);

@@ -5,17 +5,21 @@ import {stringValue, vals} from '../../util';
 import {isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain, isSignalRefDomain, VgDataRef, VgScale} from '../../vega.schema';
 import {Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
+import {mergeDomains} from './domain';
 
 
 export function assembleScale(model: Model): VgScale[] {
-    return vals(model.component.scales).reduce((scales: VgScale[], scaleComponent) => {
+    return vals(model.component.scales).reduce((scales, scaleComponent) => {
       if (scaleComponent.merged) {
         // Skipped merged scales
         return scales;
       }
 
       // We need to cast here as combine returns Partial<VgScale> by default.
-      const scale = scaleComponent.combine(['name', 'type', 'domainRaw', 'range']) as VgScale;
+      const scaleComProps = scaleComponent.combine(['name', 'type', 'domainRaw', 'range']);
+      // FIXME: why do I need to delete this property?
+      delete scaleComProps.domains;
+      const scale = scaleComProps as VgScale;
 
       const domainRaw = scaleComponent.get('domainRaw');
       // As scale parsing occurs before selection parsing, a temporary signal
@@ -26,28 +30,21 @@ export function assembleScale(model: Model): VgScale[] {
         scale.domainRaw = selectionScaleDomain(model, domainRaw);
       }
 
-      // Correct references to data as the original domain's data was determined
-      // in parseScale, which happens before parseData. Thus the original data
-      // reference can be incorrect.
-      const domains = scaleComponent.get('domains');
-      // FIXME(domoritz): please make the right union and domain correction
-      // scaleDomain = unionDomains(domains);
-      // if (isDataRefDomain(domain) || isFieldRefUnionDomain(domain)) {
-      //   domain.data = model.lookupDataSource(domain.data);
-      //   scales.push(scale);
-      // } else if (isDataRefUnionedDomain(domain)) {
-      //   domain.fields = domain.fields.map((f: VgDataRef) => {
-      //     return {
-      //       ...f,
-      //       data: model.lookupDataSource(f.data)
-      //     };
-      //   });
-      //   scales.push(scale);
-      // } else if (isSignalRefDomain(domain) || isArray(domain)) {
-      //   scales.push(scale);
-      // } else {
-      //   throw new Error('invalid scale domain');
-      // }
+      const domains = scaleComponent.get('domains').map(domain => {
+        // Correct references to data as the original domain's data was determined
+        // in parseScale, which happens before parseData. Thus the original data
+        // reference can be incorrect.
+
+        if (isDataRefDomain(domain)) {
+          domain.data = model.lookupDataSource(domain.data);
+        }
+        return domain;
+      });
+
+      // domains is an array that has to be merged into a single vega domain
+      scale.domain = mergeDomains(domains);
+      scales.push(scale);
+
       return scales;
-    }, []);
+    }, [] as VgScale[]);
 }

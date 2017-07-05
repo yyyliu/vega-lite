@@ -1203,12 +1203,7 @@
           "type": "string"
         },
         "formatType": {
-          "enum": [
-            "number",
-            "time",
-            "utc"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/FormatType"
         },
         "selection": {
           "$ref": "#/definitions/SelectionOperand"
@@ -1562,12 +1557,7 @@
           "type": "string"
         },
         "formatType": {
-          "enum": [
-            "number",
-            "time",
-            "utc"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/FormatType"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -2496,6 +2486,14 @@
       "minimum": 100,
       "type": "number"
     },
+    "FormatType": {
+      "enum": [
+        "number",
+        "time",
+        "utc"
+      ],
+      "type": "string"
+    },
     "FacetedSpec": {
       "additionalProperties": false,
       "properties": {
@@ -3190,12 +3188,7 @@
           "type": "string"
         },
         "formatType": {
-          "enum": [
-            "number",
-            "time",
-            "utc"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/FormatType"
         },
         "offset": {
           "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.\n\n__Default value:__  `0`",
@@ -5154,12 +5147,7 @@
           "type": "string"
         },
         "formatType": {
-          "enum": [
-            "number",
-            "time",
-            "utc"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/FormatType"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",

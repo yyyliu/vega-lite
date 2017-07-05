@@ -77,10 +77,10 @@ describe('compile/legend', function() {
         mark: "point",
         encoding: {
           x: {field: "a", type: "temporal"},
-          color: {field: "a", type: "ordinal", formatType: "number", legend: {format: "d"}}
+          color: {field: "a", type: "ordinal", legend: {formatType: 'number', format: 'd'}}
         }
       });
-      const fieldDef = {field: 'a', type: ORDINAL, formatType: "number", legend: {format: "d"}};
+      const fieldDef = {field: 'a', type: ORDINAL, legend: {formatType: 'number', format: "d"}};
       const label = encode.labels(fieldDef, {}, model, COLOR);
       assert.deepEqual(label, {text: {signal: `format(a, 'd')`}});
     });
@@ -90,11 +90,18 @@ describe('compile/legend', function() {
         mark: "point",
         encoding: {
           x: {field: "a", type: "temporal"},
-          color: {field: "a", type: "nominal", timeUnit: "quarter", formatType: "time", legend: {format: "%y"}}}
+          color: {field: "a", type: "nominal", legend: {formatType: 'time', format: "%y"}}
+        },
+        config: {
+          timeFormat: '%y',
+          legend: {
+            shortTimeLabels: false
+          }
+        }
       });
-      const fieldDef = {field: 'a', type: NOMINAL, formatType: "time", legend: {format: "%y"}};
+      const fieldDef = {field: 'a', type: NOMINAL, formatType: "time", legend: {formatType: 'time', format: "%y"}};
       const label = encode.labels(fieldDef, {}, model, COLOR);
-      assert.deepEqual(label, {text: {signal: 'timeFormat(datum.value, \'%y\')'}});
+      assert.deepEqual(label, {text: {signal: `timeFormat(datum.value, '%y')`}});
     });
   });
 });

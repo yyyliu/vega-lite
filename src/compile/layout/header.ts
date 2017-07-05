@@ -97,7 +97,7 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
       const format = facetFieldDef.header ? facetFieldDef.header.format : undefined;
 
       title = {
-        text: formatSignalRef(facetFieldDef, format, 'parent', model.config, 'number', true), // number and channel passed as placeholders
+        text: formatSignalRef(facetFieldDef, format, 'parent', model.config, undefined, true), // undefined passed since formatType not supported in headers
         offset: 10,
         orient: channel === 'row' ? 'left' : 'top',
         encode: {

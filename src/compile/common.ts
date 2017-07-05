@@ -122,7 +122,7 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
         return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
       } else {
         return {
-          signal: `${formatExpr(field(fieldDef, {expr, binSuffix: 'start'}), format)} + '-' + ${formatExpr(field(fieldDef, {expr, binSuffix: 'end'}), format)}`
+          signal: `${formatExpr(field(fieldDef, {expr, binSuffix: 'start'}), format)}+'-'+${formatExpr(field(fieldDef, {expr, binSuffix: 'end'}), format)}`
         };
       }
     } else {
@@ -143,7 +143,7 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
         return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
       } else {
         return {
-          signal: `${formatExpr(field(fieldDef, {expr, binSuffix: 'start'}), format)} + '-' + ${formatExpr(field(fieldDef, {expr, binSuffix: 'end'}), format)}`
+          signal: `${formatExpr(field(fieldDef, {expr, binSuffix: 'start'}), format)}+'-'+${formatExpr(field(fieldDef, {expr, binSuffix: 'end'}), format)}`
         };
       }
     } else {

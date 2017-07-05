@@ -75,6 +75,7 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
   const config = model.config;
 
   let labels:any = {};
+  labelsSpec = labelsSpec || {};
 
   if (fieldDef.type === TEMPORAL) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
@@ -93,7 +94,7 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
     }
   }
 
-  labels = extend(labels, labelsSpec || {});
+  labels = extend(labels, labelsSpec);
 
   return keys(labels).length > 0 ? labels : undefined;
 }

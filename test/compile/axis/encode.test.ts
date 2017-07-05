@@ -45,7 +45,7 @@ describe('compile/axis', () => {
       assert.equal(labels.text.signal, expected);
     });
 
-    it('should format temporal formatType properly even if other parameters like angle is changed', () => {
+    it('should not format ordinal types', () => {
       const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
@@ -54,7 +54,6 @@ describe('compile/axis', () => {
       });
       const labels = encode.labels(model, 'x', {}, {});
       assert.deepEqual(labels, {
-        text: {signal: 'timeFormat(datum.value, \'%y\')'},
         angle: {value: 90},
         align: {value: 'left'},
         baseline: {value: 'middle'}

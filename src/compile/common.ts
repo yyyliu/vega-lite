@@ -1,4 +1,4 @@
-import {Channel, COLUMN, ROW, TEXT, TOOLTIP} from '../channel';
+import {Channel, COLUMN, NonspatialScaleChannel, ROW, SpatialScaleChannel, TEXT, TOOLTIP} from '../channel';
 import {CellConfig, Config} from '../config';
 import {field, FieldDef, isScaleFieldDef, OrderFieldDef} from '../fielddef';
 import * as log from '../log';
@@ -7,7 +7,7 @@ import {ScaleType} from '../scale';
 import {isConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, LayoutSize, Spec} from '../spec';
 import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';
-import {FormatType, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {FormatType, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {duplicate, isArray} from '../util';
 import {VgEncodeEntry, VgSort} from '../vega.schema';
 import {ConcatModel} from './concat';
@@ -87,33 +87,7 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
 }
 
 export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, formatType: FormatType | undefined, useBinRange?: boolean) {
-  // if (channel === TEXT || channel === ROW || channel === COLUMN || channel === TOOLTIP) {
-  //   if (specifiedFormat) {
-  //     if (formatType === 'number') {
-  //       if (fieldDef.type === 'quantitative') {
-  //         const format = numberFormat(fieldDef, specifiedFormat, config);
-  //         if (fieldDef.bin) {
-  //           if (useBinRange) {
-  //             // For bin range, no need to apply format as the formula that creates range already include format
-  //             return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
-  //           } else {
-  //             return {
-  //               signal: `format(${field(fieldDef, {expr, binSuffix: 'start'})}, '${format}')+'-'+format(${field(fieldDef, {expr, binSuffix: 'end'})}, '${format}')`
-  //             };
-  //           }
-  //         } else {
-  //           return {
-  //             signal: `format(${field(fieldDef, {expr})}, '${format}')`
-  //           };
-  //         }
-  //       }
-  //     } else {
-  //       return {
-  //         signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, formatType === 'utc')
-  //       };
-  //     }
-  //   }
-  // }
+  // TODO: Refactor
   if (formatType === 'number') {
     const format = numberFormat(fieldDef, specifiedFormat, config);
     if (fieldDef.bin) {
@@ -214,4 +188,24 @@ export function titleMerger(v1: Explicit<string>, v2: Explicit<string>) {
       v1.value : // if title is the same just use one of them
       v1.value + ', ' + v2.value // join title with comma if different
   };
+}
+
+export function guideLabels(fieldDef: FieldDef<string>, config: Config, model: Model, channel: SpatialScaleChannel | NonspatialScaleChannel, label: any) {
+    if (fieldDef.type === TEMPORAL) {
+    const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
+    return {
+      signal: timeFormatExpression('datum.value', fieldDef.timeUnit, label.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)
+    };
+  } else if ((fieldDef.type === NOMINAL || fieldDef.type === ORDINAL) && label.format) {
+    if (label.formatType === 'number') {
+      return {
+        signal: `format(${fieldDef.field}, '${numberFormat(fieldDef, label.format, config)}')`
+      };
+    } else if (label.formatType) {
+      return {
+        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, label.format, config.legend.shortTimeLabels, config.timeFormat, label.formatType === 'utc')
+      };
+    }
+  }
+  return undefined;
 }

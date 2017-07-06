@@ -6,7 +6,7 @@ import {extend, keys, without} from '../../util';
 import {VgValueRef} from '../../vega.schema';
 
 import {ScaleType} from '../../scale';
-import {applyMarkConfig, numberFormat, timeFormatExpression} from '../common';
+import {applyMarkConfig, guideLabels, numberFormat, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
 
@@ -77,23 +77,10 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
   let labels:any = {};
   labelsSpec = labelsSpec || {};
 
-  if (fieldDef.type === TEMPORAL) {
-    const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
-    labelsSpec.text = {
-      signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)
-    };
-  } else if ((fieldDef.type === NOMINAL || fieldDef.type === ORDINAL) && legend.format) {
-    if (legend.formatType === 'number') {
-      labelsSpec.text = {
-        signal: `format(${fieldDef.field}, '${numberFormat(fieldDef, legend.format, config)}')`
-      };
-    } else if (legend.formatType) {
-      labelsSpec.text = {
-        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, legend.formatType === 'utc')
-      };
-    }
+  const text = guideLabels(fieldDef, config, model, channel, legend);
+  if (text) {
+    labelsSpec.text = text;
   }
-
   labels = extend(labels, labelsSpec);
 
   return keys(labels).length > 0 ? labels : undefined;

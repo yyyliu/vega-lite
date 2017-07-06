@@ -5,7 +5,7 @@ import {ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../../type';
 import {contains, extend, keys} from '../../util';
 import {AxisOrient, VgAxis} from '../../vega.schema';
-import {numberFormat, timeFormatExpression} from '../common';
+import {guideLabels, numberFormat, timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
 
 export function labels(model: UnitModel, channel: SpatialScaleChannel, specifiedLabelsSpec: any, def: Partial<VgAxis>) {
@@ -21,22 +21,9 @@ export function labels(model: UnitModel, channel: SpatialScaleChannel, specified
   let labelsSpec: any = {};
 
   // Text
-  if (fieldDef.type === TEMPORAL) {
-    const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
-
-    labelsSpec.text =  {
-      signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat, isUTCScale)
-    };
-  } else if ((fieldDef.type === NOMINAL || fieldDef.type === ORDINAL) && axis.format) {
-    if (axis.formatType === 'number') {
-      labelsSpec.text = {
-        signal: `format(${fieldDef.field}, '${numberFormat(fieldDef, axis.format, config)}')`
-      };
-    } else if (axis.formatType) {
-      labelsSpec.text = {
-        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.legend.shortTimeLabels, config.timeFormat, axis.formatType === 'utc')
-      };
-    }
+  const text = guideLabels(fieldDef, config, model, channel, axis);
+  if (text) {
+    labelsSpec.text = text;
   }
   // Label Angle
   const angle = labelAngle(axis, channel, fieldDef);

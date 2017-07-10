@@ -218,10 +218,6 @@
         {
             "name": "x",
             "type": "log",
-            "domain": {
-                "data": "source_0",
-                "field": "income"
-            },
             "domainRaw": {
                 "signal": "view_income"
             },
@@ -230,15 +226,15 @@
                 500
             ],
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "source_0",
+                "field": "income"
+            }
         },
         {
             "name": "y",
             "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "health"
-            },
             "domainRaw": {
                 "signal": "view_health"
             },
@@ -248,7 +244,11 @@
             ],
             "zero": false,
             "round": true,
-            "nice": true
+            "nice": true,
+            "domain": {
+                "data": "source_0",
+                "field": "health"
+            }
         },
         {
             "name": "size",

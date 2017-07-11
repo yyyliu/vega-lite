@@ -86,43 +86,43 @@
         {
             "name": "x",
             "type": "band",
-            "range": {
-                "step": 21
-            },
-            "round": true,
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05,
             "domain": {
                 "data": "source_0",
                 "field": "Cylinders",
                 "sort": true
-            }
-        },
-        {
-            "name": "y",
-            "type": "band",
+            },
             "range": {
                 "step": 21
             },
             "round": true,
             "paddingInner": 0.1,
-            "paddingOuter": 0.05,
+            "paddingOuter": 0.05
+        },
+        {
+            "name": "y",
+            "type": "band",
             "domain": {
                 "data": "source_0",
                 "field": "Origin",
                 "sort": true
-            }
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "color",
             "type": "sequential",
-            "range": "heatmap",
-            "nice": false,
-            "zero": false,
             "domain": {
                 "data": "source_0",
                 "field": "mean_Horsepower"
-            }
+            },
+            "range": "heatmap",
+            "nice": false,
+            "zero": false
         }
     ],
     "axes": [

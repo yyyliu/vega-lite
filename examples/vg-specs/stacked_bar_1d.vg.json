@@ -102,13 +102,6 @@
         {
             "name": "x",
             "type": "linear",
-            "range": [
-                0,
-                200
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true,
             "domain": {
                 "data": "source_0",
                 "fields": [
@@ -116,17 +109,24 @@
                     "sum_Acceleration_end"
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
         },
         {
             "name": "color",
             "type": "ordinal",
-            "range": "category",
             "domain": {
                 "data": "source_0",
                 "field": "Origin",
                 "sort": true
-            }
+            },
+            "range": "category"
         }
     ],
     "axes": [

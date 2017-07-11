@@ -313,13 +313,6 @@
         {
             "name": "x",
             "type": "linear",
-            "range": [
-                0,
-                500
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true,
             "domain": {
                 "fields": [
                     {
@@ -356,17 +349,18 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                0,
+                500
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
         },
         {
             "name": "y",
             "type": "band",
-            "range": {
-                "step": 21
-            },
-            "round": true,
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05,
             "domain": {
                 "fields": [
                     {
@@ -391,7 +385,13 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         }
     ],
     "axes": [

@@ -117,31 +117,31 @@
         {
             "name": "x",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "x"
+            },
             "range": [
                 0,
                 200
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "x"
-            }
+            "zero": true
         },
         {
             "name": "y",
             "type": "log",
+            "domain": {
+                "data": "data_0",
+                "field": "y"
+            },
             "range": [
                 200,
                 0
             ],
             "round": true,
-            "nice": true,
-            "domain": {
-                "data": "data_0",
-                "field": "y"
-            }
+            "nice": true
         }
     ],
     "axes": [

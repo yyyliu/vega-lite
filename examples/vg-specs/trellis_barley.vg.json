@@ -289,26 +289,21 @@
         {
             "name": "trellis_barley_x",
             "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "median_yield"
+            },
             "range": [
                 0,
                 200
             ],
             "zero": false,
             "round": true,
-            "nice": true,
-            "domain": {
-                "data": "data_1",
-                "field": "median_yield"
-            }
+            "nice": true
         },
         {
             "name": "trellis_barley_y",
             "type": "point",
-            "range": {
-                "step": 12
-            },
-            "round": true,
-            "padding": 0.5,
             "domain": {
                 "data": "source_0",
                 "field": "variety",
@@ -317,17 +312,22 @@
                     "op": "median",
                     "order": "descending"
                 }
-            }
+            },
+            "range": {
+                "step": 12
+            },
+            "round": true,
+            "padding": 0.5
         },
         {
             "name": "trellis_barley_color",
             "type": "ordinal",
-            "range": "category",
             "domain": {
                 "data": "data_1",
                 "field": "year",
                 "sort": true
-            }
+            },
+            "range": "category"
         }
     ],
     "legends": [

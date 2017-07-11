@@ -202,12 +202,6 @@
         {
             "name": "x",
             "type": "linear",
-            "range": [
-                0,
-                200
-            ],
-            "round": true,
-            "zero": false,
             "domain": {
                 "fields": [
                     {
@@ -228,31 +222,37 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "zero": false
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "count_*"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "count_*"
+                    }
+                ],
+                "sort": true
+            },
             "range": [
                 200,
                 0
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "count_*"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "count_*"
-                    }
-                ],
-                "sort": true
-            }
+            "zero": true
         }
     ],
     "axes": [

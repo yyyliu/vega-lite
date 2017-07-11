@@ -265,13 +265,6 @@
         {
             "name": "x",
             "type": "linear",
-            "range": [
-                0,
-                200
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true,
             "domain": {
                 "fields": [
                     {
@@ -296,16 +289,18 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
         },
         {
             "name": "y",
             "type": "point",
-            "range": {
-                "step": 21
-            },
-            "round": true,
-            "padding": 0.5,
             "domain": {
                 "fields": [
                     {
@@ -326,7 +321,12 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
         }
     ],
     "axes": [

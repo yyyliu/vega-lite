@@ -96,16 +96,16 @@
         {
             "name": "x",
             "type": "point",
-            "range": {
-                "step": 21
-            },
-            "round": true,
-            "padding": 0.5,
             "domain": {
                 "data": "source_0",
                 "field": "a",
                 "sort": true
-            }
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
         }
     ],
     "axes": [

@@ -161,42 +161,42 @@
         {
             "name": "x",
             "type": "time",
+            "domain": {
+                "data": "source_0",
+                "field": "yearmonth_date"
+            },
             "range": [
                 0,
                 300
             ],
             "nice": "month",
-            "round": true,
-            "domain": {
-                "data": "source_0",
-                "field": "yearmonth_date"
-            }
+            "round": true
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": [
+                0,
+                1
+            ],
             "range": [
                 200,
                 0
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": [
-                0,
-                1
-            ]
+            "zero": true
         },
         {
             "name": "color",
             "type": "ordinal",
-            "range": {
-                "scheme": "category20b"
-            },
             "domain": {
                 "data": "source_0",
                 "field": "series",
                 "sort": true
+            },
+            "range": {
+                "scheme": "category20b"
             }
         }
     ],

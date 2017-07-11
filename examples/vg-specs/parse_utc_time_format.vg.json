@@ -83,16 +83,16 @@
         {
             "name": "y",
             "type": "point",
-            "range": {
-                "step": 21
-            },
-            "round": true,
-            "padding": 0.5,
             "domain": {
                 "data": "data_0",
                 "field": "hours_date",
                 "sort": true
-            }
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
         }
     ],
     "axes": [

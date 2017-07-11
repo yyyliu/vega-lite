@@ -125,32 +125,32 @@
         {
             "name": "x",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "average_b"
+            },
             "range": [
                 0,
                 200
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "average_b"
-            }
+            "zero": true
         },
         {
             "name": "y",
             "type": "band",
+            "domain": {
+                "data": "data_0",
+                "field": "a",
+                "sort": true
+            },
             "range": {
                 "step": 21
             },
             "round": true,
             "paddingInner": 0.1,
-            "paddingOuter": 0.05,
-            "domain": {
-                "data": "data_0",
-                "field": "a",
-                "sort": true
-            }
+            "paddingOuter": 0.05
         }
     ],
     "axes": [

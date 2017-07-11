@@ -195,11 +195,6 @@
         {
             "name": "x",
             "type": "time",
-            "range": [
-                0,
-                200
-            ],
-            "round": true,
             "domain": {
                 "fields": [
                     {
@@ -216,35 +211,40 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "price"
+                    }
+                ],
+                "sort": true
+            },
             "range": [
                 200,
                 0
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "price"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "price"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "price"
-                    }
-                ],
-                "sort": true
-            }
+            "zero": true
         }
     ],
     "axes": [

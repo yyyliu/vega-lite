@@ -109,12 +109,6 @@
         {
             "name": "x",
             "type": "linear",
-            "range": [
-                0,
-                200
-            ],
-            "round": true,
-            "zero": false,
             "domain": {
                 "data": "source_0",
                 "fields": [
@@ -122,22 +116,28 @@
                     "bin_maxbins_10_precipitation_end"
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "zero": false
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "count_*"
+            },
             "range": [
                 200,
                 0
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "source_0",
-                "field": "count_*"
-            }
+            "zero": true
         }
     ],
     "axes": [

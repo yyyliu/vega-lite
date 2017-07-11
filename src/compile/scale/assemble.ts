@@ -15,16 +15,15 @@ export function assembleScale(model: Model): VgScale[] {
         return scales;
       }
 
-      // We need to cast here as combine returns Partial<VgScale> by default.
-      const scale = scaleComponent.combine(['name', 'type', 'domainRaw', 'range']) as VgScale;
+      const {name, type, domainRaw: raw, range, ...otherScaleProps} = scaleComponent.combine();
+      let domainRaw = raw;  // needs to be mutable
 
-      const domainRaw = scaleComponent.get('domainRaw');
       // As scale parsing occurs before selection parsing, a temporary signal
       // is used for domainRaw. Here, we detect if this temporary signal
       // is set, and replace it with the correct domainRaw signal.
       // For more information, see isRawSelectionDomain in selection.ts.
       if (domainRaw && isRawSelectionDomain(domainRaw)) {
-        scale.domainRaw = selectionScaleDomain(model, domainRaw);
+        domainRaw = selectionScaleDomain(model, domainRaw);
       }
 
       const domains = scaleComponent.domains.map(domain => {
@@ -39,8 +38,17 @@ export function assembleScale(model: Model): VgScale[] {
       });
 
       // domains is an array that has to be merged into a single vega domain
-      scale.domain = mergeDomains(domains);
-      scales.push(scale);
+      const domain = mergeDomains(domains);
+
+
+      scales.push({
+        name,
+        type,
+        domain: domain,
+        range: range,
+        ...(domainRaw ? {domainRaw} : {}),
+        ...otherScaleProps
+      });
 
       return scales;
     }, [] as VgScale[]);

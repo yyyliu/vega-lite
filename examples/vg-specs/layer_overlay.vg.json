@@ -258,11 +258,6 @@
         {
             "name": "x",
             "type": "point",
-            "range": {
-                "step": 21
-            },
-            "round": true,
-            "padding": 0.5,
             "domain": {
                 "fields": [
                     {
@@ -283,39 +278,44 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
         },
         {
             "name": "y",
             "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_5",
+                        "field": "max_Horsepower"
+                    },
+                    {
+                        "data": "data_6",
+                        "field": "max_Horsepower"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "min_Horsepower"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "min_Horsepower"
+                    }
+                ],
+                "sort": true
+            },
             "range": [
                 200,
                 0
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_5",
-                        "field": "max_Horsepower"
-                    },
-                    {
-                        "data": "data_6",
-                        "field": "max_Horsepower"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "min_Horsepower"
-                    },
-                    {
-                        "data": "data_4",
-                        "field": "min_Horsepower"
-                    }
-                ],
-                "sort": true
-            }
+            "zero": true
         }
     ],
     "axes": [

@@ -257,13 +257,6 @@
         {
             "name": "y",
             "type": "linear",
-            "range": [
-                200,
-                0
-            ],
-            "round": true,
-            "nice": true,
-            "zero": true,
             "domain": {
                 "fields": [
                     {
@@ -296,7 +289,14 @@
                     }
                 ],
                 "sort": true
-            }
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
         }
     ],
     "axes": [

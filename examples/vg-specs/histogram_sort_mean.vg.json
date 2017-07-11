@@ -89,27 +89,21 @@
         {
             "name": "x",
             "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "mean_Horsepower"
+            },
             "range": [
                 0,
                 200
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domain": {
-                "data": "data_0",
-                "field": "mean_Horsepower"
-            }
+            "zero": true
         },
         {
             "name": "y",
             "type": "band",
-            "range": {
-                "step": 21
-            },
-            "round": true,
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05,
             "domain": {
                 "data": "source_0",
                 "field": "Origin",
@@ -117,7 +111,13 @@
                     "op": "mean",
                     "field": "Horsepower"
                 }
-            }
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         }
     ],
     "axes": [

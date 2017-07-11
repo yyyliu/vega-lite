@@ -16,10 +16,7 @@ export function assembleScale(model: Model): VgScale[] {
       }
 
       // We need to cast here as combine returns Partial<VgScale> by default.
-      const scaleComProps = scaleComponent.combine(['name', 'type', 'domainRaw', 'range']);
-      // FIXME: why do I need to delete this property?
-      delete scaleComProps.domains;
-      const scale = scaleComProps as VgScale;
+      const scale = scaleComponent.combine(['name', 'type', 'domainRaw', 'range']) as VgScale;
 
       const domainRaw = scaleComponent.get('domainRaw');
       // As scale parsing occurs before selection parsing, a temporary signal
@@ -30,7 +27,7 @@ export function assembleScale(model: Model): VgScale[] {
         scale.domainRaw = selectionScaleDomain(model, domainRaw);
       }
 
-      const domains = scaleComponent.get('domains').map(domain => {
+      const domains = scaleComponent.domains.map(domain => {
         // Correct references to data as the original domain's data was determined
         // in parseScale, which happens before parseData. Thus the original data
         // reference can be incorrect.

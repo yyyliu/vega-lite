@@ -95,7 +95,7 @@ function parseNonUnitScaleDomain(model: Model) {
         domain.fields = domain.fields.map((f: VgDataRef) => {
           return {
             ...f,
-            data: FACET_SCALE_PREFIX + f.data.replace(FACET_SCALE_PREFIX, '')
+            data: FACET_SCALE_PREFIX + f.data.replace(FACET_SCALE_PREFIX, '')  // add FACET_SCALE_PREFIX only once
           };
         });
       }

@@ -8,6 +8,7 @@ import {isScaleChannel} from '../../channel'
 import {hasContinuousDomain} from '../../scale';
 import {QUANTITATIVE, TEMPORAL} from '../../type';;
 import {FieldDef} from '../../fielddef';
+import {ModelWithField} from '../model';
 
 export class FilterInvalidNode extends DataFlowNode {
   private _filter_null: Dict<FieldDef<String>>;
@@ -24,7 +25,7 @@ export class FilterInvalidNode extends DataFlowNode {
    this._filter_null = filter_null;
   }
 
-  public static make(model: UnitModel) {
+  public static make(model: ModelWithField) {
     const filter_nonpos = SCALE_CHANNELS.reduce(function(nonPositiveComponent, channel) {
       const scale = model.getScaleComponent(channel);
       if (!scale || !model.field(channel)) {
@@ -64,10 +65,7 @@ export class FilterInvalidNode extends DataFlowNode {
   }
 
   get filter() {
-    let result = {};
-    result.concat(this._filter_non_pos);
-    result.concat(this._filter_null)
-    return result;
+    return {};
   }
 
   public assemble(): VgTransform[] {
@@ -94,7 +92,7 @@ export class FilterInvalidNode extends DataFlowNode {
       return _filters;
     }, []);
 
-    filter_nonpos.add(filter_null);
+    filter_nonpos.concat(filter_null);
     return filter_nonpos;
   }
 }

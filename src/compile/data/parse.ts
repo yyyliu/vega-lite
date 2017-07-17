@@ -17,6 +17,7 @@ import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {parseTransformArray} from './transforms';
+import {FilterInvalidNode} from './FilterInvalid';
 
 
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
@@ -128,11 +129,6 @@ export function parseData(model: Model): DataComponent {
   }
 
   if (model instanceof ModelWithField) {
-    const nullFilter = NullFilterNode.make(model);
-    if (nullFilter) {
-      nullFilter.parent = head;
-      head = nullFilter;
-    }
 
     if (!parentIsLayer) {
       const bin = BinNode.makeBinFromEncoding(model);
@@ -168,12 +164,6 @@ export function parseData(model: Model): DataComponent {
       stack.parent = head;
       head = stack;
     }
-
-    const nonPosFilter = NonPositiveFilterNode.make(model);
-    if (nonPosFilter) {
-      nonPosFilter.parent = head;
-      head = nonPosFilter;
-    }
   }
 
   if (model instanceof UnitModel) {
@@ -199,6 +189,12 @@ export function parseData(model: Model): DataComponent {
     outputNodes[facetName] = facetRoot;
     facetRoot.parent = head;
     head = facetRoot;
+  }
+
+  const filterInvalid = FilterInvalidNode.make(model);
+  if (filterInvalid) {
+    filterInvalid.parent = head;
+    head = filterInvalid;
   }
 
   // add the format parse from this model so that children don't parse the same field again

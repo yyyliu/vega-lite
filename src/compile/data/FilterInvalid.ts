@@ -8,7 +8,7 @@ import {isScaleChannel} from '../../channel'
 import {hasContinuousDomain} from '../../scale';
 import {QUANTITATIVE, TEMPORAL} from '../../type';;
 import {FieldDef} from '../../fielddef';
-import {ModelWithField} from '../model';
+import {Model, ModelWithField} from '../model';
 
 export class FilterInvalidNode extends DataFlowNode {
   private _filter_null: Dict<FieldDef<String>>;
@@ -25,36 +25,47 @@ export class FilterInvalidNode extends DataFlowNode {
    this._filter_null = filter_null;
   }
 
-  public static make(model: ModelWithField) {
-    const filter_nonpos = SCALE_CHANNELS.reduce(function(nonPositiveComponent, channel) {
-      const scale = model.getScaleComponent(channel);
-      if (!scale || !model.field(channel)) {
-        // don't set anything
-        return nonPositiveComponent;
-      }
+  public static make(model: Model) {
 
-      if (scale.get('type') === ScaleType.LOG) {
-        nonPositiveComponent[model.field(channel)] = model.fieldDef(channel);
-      }
-      return nonPositiveComponent;
-    }, {} as Dict<FieldDef<String>>);
+    // create the filter of all the non positive fields
+      const filter_nonpos = SCALE_CHANNELS.reduce(function(nonPositiveComponent, channel) {
 
-    const filter_nulls = model.reduceFieldDef((aggregator: Dict<FieldDef<string>>, fieldDef, channel) => {
-      if (model.config.invalidValues === 'filter' && !fieldDef.aggregate && fieldDef.field) {
-        // Vega's aggregate operator already handle invalid values, so we only have to consider non-aggregate field here.
+        if (model instanceof UnitModel) {
+            const scale = model.getScaleComponent(channel);
+            if (!scale || !model.field(channel)) {
+              // don't set anything
+              return nonPositiveComponent;
+            }
 
-        const scaleComponent = isScaleChannel(channel) && model.getScaleComponent(channel);
-        if (scaleComponent) {
-          const scaleType = scaleComponent.get('type');
-
-          // only automatically filter null for continuous domain since discrete domain scales can handle invalid values.
-          if (hasContinuousDomain(scaleType)) {
-            aggregator[fieldDef.field] = fieldDef;
-          }
+            if (scale.get('type') === ScaleType.LOG) {
+              nonPositiveComponent[model.field(channel)] = model.fieldDef(channel);
+            }
+            return nonPositiveComponent;
         }
-      }
-      return aggregator;
-    }, {} as Dict<FieldDef<string>>);
+        return nonPositiveComponent;
+      }, {} as Dict<FieldDef<String>>);
+
+    // create the filter of all the fields that cannot have null
+    let filter_nulls = {};
+    if (model instanceof ModelWithField) {
+      filter_nulls = model.reduceFieldDef((aggregator: Dict<FieldDef<string>>, fieldDef, channel) => {
+          if (model.config.invalidValues === 'filter' && !fieldDef.aggregate && fieldDef.field) {
+            // Vega's aggregate operator already handle invalid values, so we only have to consider non-aggregate field here.
+
+            const scaleComponent = isScaleChannel(channel) && model.getScaleComponent(channel);
+            if (scaleComponent) {
+              const scaleType = scaleComponent.get('type');
+
+              // only automatically filter null for continuous domain since discrete domain scales can handle invalid values.
+              if (hasContinuousDomain(scaleType)) {
+                aggregator[fieldDef.field] = fieldDef;
+              }
+            }
+          }
+
+          return aggregator;
+      }, {} as Dict<FieldDef<string>>);
+    }
 
 
     if (!keys(filter_nulls).length && !keys(filter_nonpos).length) {
@@ -68,6 +79,7 @@ export class FilterInvalidNode extends DataFlowNode {
     return {};
   }
 
+  // create the VgTransforms for each of the filtered fields
   public assemble(): VgTransform[] {
     let filter_nonpos = keys(this._filter_null).filter((field) => {
       // Only filter fields (keys) with value = true
@@ -92,7 +104,9 @@ export class FilterInvalidNode extends DataFlowNode {
       return _filters;
     }, []);
 
-    filter_nonpos.concat(filter_null);
-    return filter_nonpos;
+    // combine the two arrays and return the filtered result
+    let res = filter_nonpos;
+    res.concat(filter_null);
+    return res;
   }
 }
